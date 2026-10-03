@@ -1,31 +1,36 @@
 {
-  "name": "ai-humanizer",
-  "version": "0.1.0",
+  "name": "apexcode",
+  "version": "1.3.0",
   "private": true,
-  "description": "Make AI-generated content undetectable. Rules that prevent em dashes, buzzwords, over-formatting, narrating comments, git co-author trailers, and uniform sentence structure.",
+  "description": "Write and audit human-sounding prose, code, comments and commits. One skill, an always-on rule, an /audit command, and a Rust CLI with detection, humanization and pre-commit hooks.",
   "scripts": {
     "validate": "node scripts/validate.mjs",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "install-rules": "node scripts/install-agent-rules.mjs",
+    "sync-rules": "node scripts/install-agent-rules.mjs . --only=claude,cursor,windsurf --no-skill"
   },
   "keywords": [
-    "ai-humanizer",
+    "apexcode",
     "humanize",
     "ai-detection",
     "writing",
     "cursor-plugin",
     "claude-code",
     "ai-agent",
-    "readme"
+    "readme",
+    "stylometry",
+    "commits",
+    "code-review"
   ],
   "author": {
-    "name": "Ofer Shapira",
-    "url": "https://github.com/ofershap"
+    "name": "Mohamed Alieu Jagitay",
+    "email": "badaraaliyadev@gmail.com"
   },
-  "license": "MIT",
+  "license": "Apache-2.0 AND MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ofershap/ai-humanizer.git"
+    "url": "https://github.com/mohamedalieujagitay/ApexCode.git"
   },
   "devDependencies": {
     "prettier": "^3.4.0"

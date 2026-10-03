@@ -1,0 +1,17 @@
+{
+  "name": "apexcode",
+  "owner": {
+    "name": "Mohamed Alieu Jagitay"
+  },
+  "metadata": {
+    "description": "Production-quality, human-style code and prose for every coding agent.",
+    "version": "1.3.0"
+  },
+  "plugins": [
+    {
+      "name": "apexcode",
+      "source": "./",
+      "description": "Always-on skill, rules, /audit and /retrofit commands, and session hooks. Agents write production-quality, natural human-style code, and bring existing code up to that standard without breaking it."
+    }
+  ]
+}

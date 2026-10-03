@@ -1,0 +1,118 @@
+<!-- apexcode:managed -->
+
+ApexCode is always on in this project. Apply these rules to every response that writes or changes code, comments, commits, PRs or docs, even when nobody mentions ApexCode.
+
+# ApexCode
+
+Always on. No one has to ask for it. Applies to everything you write: prose, docs, READMEs, code, comments, commit messages and PR
+descriptions. The full reference with examples is the `apexcode` skill.
+
+## Standing instructions
+
+- Code must be powerful, professional, clean and human: it works, reads cleanly and looks
+  hand-written by a skilled engineer.
+- Never remove the original code. Keep all existing features, functions, files and behaviour when
+  improving or humanizing. Remove something only when the user explicitly asks.
+- Never reduce anything. Optimisations keep everything that was there before.
+- Rewriting existing code to these rules only happens when the user asks (`/retrofit`). Then
+  behaviour must stay identical: baseline first, small verified batches, never touch public names
+  or schemas, never edit tests to pass. Protocol: `skills/apexcode/references/retrofit.md`.
+- When merging sources, produce one unified result with one name, one voice and one structure.
+
+## House style first
+
+- Before writing into a repo, check `git log -n 20` and a few neighbouring files. Match their case,
+  length, tone, naming and comment style. Existing conventions override every default here.
+
+## Prose
+
+- Never use em dashes (—) as separators. Use a spaced hyphen ( - ), a period, or restructure.
+- Never use: delve, tapestry, leverage, utilize, facilitate, streamline, paramount, pivotal,
+  meticulous, holistic, robust, comprehensive, multifaceted, harness, foster, bolster, seamless,
+  cutting-edge, game-changing, revolutionary, groundbreaking, nuanced, intricate, elevate, empower,
+  unleash, ensure, enhanced.
+- Use plain words: "important" not "paramount", "careful" not "meticulous", "use" not "leverage",
+  "improve" not "optimize".
+- Never open with "In today's...", "It's worth noting...", "Let me explain...", "At its core..." or
+  close with "In summary...", "In conclusion...", "Happy coding!".
+- Vary sentence length. Never write 4+ sentences of similar length in a row. Fragments are fine.
+- Don't hedge ("might potentially", "you may want to consider"). State it.
+- Never over-format: no bold-label bullets (**Feature:** desc), no uniform list lengths, no
+  tricolons in every list, one or two emoji per file at most.
+- READMEs and docs: direct and sparse. Say what the thing does, not why it's amazing.
+
+## Code
+
+- Write the least code that solves the problem correctly, shaped like the files around it.
+- Comment why, never what. No narrating comments. Inline `//` for internal logic, docblocks only
+  for public APIs. `todo`/`fixme` only on real workarounds.
+- Domain names, not `data`/`result`/`item`/`temp`.
+- Cut over-descriptive names (`userAuthenticationToken` -> `authToken`) and follow the repo's
+  casing convention.
+- Trust the type system. Validate at boundaries only. No null checks on guaranteed values.
+- No try/catch that only logs and rethrows, and never swallow errors. Add context when
+  rethrowing. Error messages name the value and what was expected.
+- Early returns over nesting. No `else` after `return`. `return x` instead of
+  `if (x) return true else return false`.
+- No wrappers around one standard-library call, no options objects for one setting, no layers the
+  codebase doesn't already use, no new dependency a few lines could replace.
+- No unrequested example-usage blocks, leftover `print`/`console.log`, unused imports or
+  parameters, or placeholder `TODO: implement`.
+- Write each language idiomatically (TS inference + `unknown`, Python comprehensions + pathlib,
+  Rust `?` + iterators, Go wrapped errors + small interfaces).
+- Change only what was asked. Don't refactor or reformat what you passed through.
+- Before handing back: delete any line that doesn't change behaviour, and confirm it builds,
+  passes tests and does exactly what was asked.
+- Dev shorthand where natural: auth, info, utils, config, param, impl, opt, sync, repo.
+- Correctness first. Never change behaviour, identifiers in public APIs, strings or user-facing
+  copy just to sound human.
+
+## Engineering
+
+- Priority: correctness, then security, maintainability, simplicity, performance.
+- For non-trivial work follow the workflow: understand, inspect, design, implement, verify, break
+  it, fix, review, report. Full guide: `skills/apexcode/references/senior-engineer.md`.
+- Never invent imports, packages, methods, hooks or files. Use only APIs and paths you've confirmed
+  exist in the project. Full list of AI code patterns: `skills/apexcode/references/ai-code-patterns.md`.
+- Reuse existing logic instead of duplicating it. No hardcoded secrets, URLs, IDs, limits or fees.
+  Use the project's config.
+- No empty or fake implementations, no design patterns without a real need, no generic CRUD for
+  domain logic, no "Something went wrong" error messages.
+- Don't force every file into the same template. Code should obviously belong to this project.
+- Name length follows scope: `i`, `n`, `x`, `res` are fine in small scopes. No
+  `currentProcessedUserData`, `processedData` or `finalResult` when `user`, `order` or `total` is
+  clear. Full guide: `skills/apexcode/references/human-style-code.md`.
+- Complexity and function size follow the problem. No needless intermediate variables, no
+  splitting one small operation into many functions, no docblocks on trivial functions.
+- Never manufacture human-looking mistakes, randomness, fake TODOs or imperfections in code. Keep
+  genuine TODO/FIXME notes and existing names; don't normalise them.
+- Never trust external input. Validate at boundaries. Check authentication, authorization,
+  injection, secrets and data exposure on every change that touches them.
+- For money, inventory, permissions and counters, think through atomicity, idempotency, retries,
+  concurrency and transactions. No floating point for exact money.
+- Test the failure path too: invalid input, unauthorized, missing resource, timeouts, duplicates.
+- Frontend handles loading, empty, error, unauthorized, offline and retry states, not only success.
+- Never log passwords, tokens, keys or sensitive personal data.
+- Never claim "bug-free", "production-ready" or "all tests pass" without evidence. Say what was
+  verified and what wasn't.
+
+## Git
+
+- Never add co-author trailers for AI tools (Co-authored-by: Cursor, Copilot, etc.) or "Generated
+  by" attribution.
+- Commit subjects: lowercase, no trailing period, about 5-7 words, under 50 chars. No
+  `feat:`/`fix:`/`chore:` unless the repo uses them or the user asks. Body only when the why isn't
+  obvious, and no marketing language.
+- PRs: what changed, why, how to test.
+
+## Rewrite requests
+
+- When asked to humanize or rewrite something, return only the transformed text. No preamble, no
+  "Sure, here's the humanized version", no code fence unless the input was a full code file.
+
+## Before sending code
+
+Check every answer that contains code: original code intact, every import/API/file real, errors
+handled with context, names fit scope and domain, no debug output or fake implementations in what
+you added, matches the surrounding style, and the summary claims only what was verified. Fix any
+failure before sending.

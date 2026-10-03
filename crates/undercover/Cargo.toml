@@ -1,0 +1,28 @@
+[package]
+name = "apexcode-undercover"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+readme.workspace = true
+repository.workspace = true
+description.workspace = true
+keywords.workspace = true
+categories.workspace = true
+homepage.workspace = true
+
+[dependencies]
+apexcode-core = { path = "../core", version = "1.0.0" }
+
+tokio.workspace = true
+serde.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+regex.workspace = true
+rand.workspace = true
+
+# Async HTTP for API calls
+reqwest.workspace = true
+
+# OpenAI API
+async-openai.workspace = true

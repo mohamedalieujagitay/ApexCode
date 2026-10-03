@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { execFileSync } from "node:child_process";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import process from "node:process";
@@ -80,7 +81,9 @@ async function validatePlugin() {
 
   const skillsDir = path.join(root, "skills");
   if (await exists(skillsDir)) {
-    const skills = await fs.readdir(skillsDir);
+    const skills = (await fs.readdir(skillsDir, { withFileTypes: true }))
+      .filter((d) => d.isDirectory())
+      .map((d) => d.name);
     for (const skill of skills) {
       const skillPath = path.join(skillsDir, skill, "SKILL.md");
       if (!(await exists(skillPath))) {
@@ -114,6 +117,30 @@ async function validatePlugin() {
       }
     }
     console.log(`  Rules: ${rules.length} found`);
+
+    // .claude/.cursor/.windsurf copies are generated from rules/apexcode.mdc; a dry run that
+    // would create or update anything means someone edited one side by hand.
+    const sync = execFileSync(
+      process.execPath,
+      [
+        "scripts/install-agent-rules.mjs",
+        ".",
+        "--only=claude,cursor,windsurf",
+        "--no-skill",
+        "--dry-run",
+      ],
+      { cwd: root, encoding: "utf8" },
+    );
+    const stale = sync
+      .split("\n")
+      .filter((line) => /^\s+(created|updated|appended|skip)\b/.test(line))
+      // CLAUDE.md is gitignored, so a fresh checkout never has it
+      .filter((line) => !line.includes("CLAUDE.md"))
+      .map((line) => line.trim());
+    if (stale.length) {
+      error(`Editor rule copies out of sync with rules/apexcode.mdc (run npm run sync-rules):`);
+      stale.forEach((line) => error(`  ${line}`));
+    }
   }
 
   const commandsDir = path.join(root, "commands");

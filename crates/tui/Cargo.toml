@@ -1,0 +1,24 @@
+[package]
+name = "apexcode-tui"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+readme.workspace = true
+repository.workspace = true
+description.workspace = true
+keywords.workspace = true
+categories.workspace = true
+homepage.workspace = true
+
+[dependencies]
+apexcode-core = { path = "../core", version = "1.0.0" }
+
+tokio = { workspace = true, features = ["full"] }
+serde.workspace = true
+anyhow.workspace = true
+
+ratatui.workspace = true
+crossterm.workspace = true
+git2.workspace = true
+rand.workspace = true

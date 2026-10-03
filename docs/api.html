@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference - ApexCode</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem; color: inherit;">
+                    <svg width="32" height="32" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="256" height="256" rx="56" fill="#050505"/>
+                        <rect x="2" y="2" width="252" height="252" rx="54" stroke="#ffffff" stroke-opacity="0.1" stroke-width="2"/>
+                        <circle cx="128" cy="136" r="80" stroke="#ffffff" stroke-opacity="0.03" stroke-width="2"/>
+                        <path d="M128 64 L92 128 L164 128 Z" fill="#ffffff" fill-opacity="0.15"/>
+                        <path d="M128 64 L56 192 L200 192 Z" stroke="#ffffff" stroke-width="16" stroke-linejoin="round"/>
+                        <path d="M92 128 L164 128" stroke="#ffffff" stroke-width="16" stroke-cap="round"/>
+                    </svg>
+                    <span>ApexCode</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="getting-started.html" class="active">Docs</a>
+                <a href="https://github.com/mohamedalieujagitay/ApexCode" class="nav-github">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <div class="sidebar-section">
+                        <h3>Getting Started</h3>
+                        <ul>
+                            <li><a href="getting-started.html#installation">Installation</a></li>
+                            <li><a href="getting-started.html#quick-start">Quick Start</a></li>
+                            <li><a href="getting-started.html#basic-commands">Basic Commands</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li><a href="detection.html">AI Detection</a></li>
+                            <li><a href="humanization.html">Code Humanization</a></li>
+                            <li><a href="jitter.html">Temporal Obfuscation</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3>Advanced</h3>
+                        <ul>
+                            <li><a href="undercover.html">Undercover Mode</a></li>
+                            <li><a href="configuration.html">Configuration</a></li>
+                            <li><a href="#overview" class="active">API Reference</a></li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <article class="docs-content">
+                    <h1>API Reference</h1>
+                    <p class="docs-intro">Complete guide to the ApexCode core library.</p>
+
+                    <section id="overview" class="docs-section">
+                        <h2>Overview</h2>
+                        <p>ApexCode provides a modular architecture. While most users will interface through the CLI, developers can integrate the specific underlying engines into their own Rust projects.</p>
+                    </section>
+
+                    <section id="crate-structure" class="docs-section">
+                        <h2>Crate Structure</h2>
+                        <ul>
+                            <li><code>apexcode-core</code>: Core types and traits.</li>
+                            <li><code>apexcode-detector</code>: AI stylometry detection engine.</li>
+                            <li><code>apexcode-humanizer</code>: Code humanization tools.</li>
+                            <li><code>apexcode-undercover</code>: Adversarial rewrite tools.</li>
+                            <li><code>apexcode-jitter</code>: Temporal obfuscation features.</li>
+                            <li><code>apexcode-tui</code>: The terminal UI dashboard implementation.</li>
+                        </ul>
+                    </section>
+
+                    <section id="detector-api" class="docs-section">
+                        <h2>Detector API</h2>
+                        <p>Use the detection engine to analyze code for AI-generated patterns.</p>
+
+                        <div class="code-block">
+                            <code>use apexcode_detector::ApexDetector;
+use apexcode_core::{CodeBlock, Language};
+
+fn main() -> anyhow::Result<()> {
+    let detector = ApexDetector::new()?;
+    let code = CodeBlock {
+        path: "src/main.rs".into(),
+        language: Language::Rust,
+        content: "fn main() { println!(\"Hello World\"); }".into(),
+        line_range: (1, 1),
+    };
+
+    let result = detector.detect(&code)?;
+    println!("AI Probability: {:.2}%", result.score.ai_probability * 100.0);
+
+    Ok(())
+}</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section id="humanizer-api" class="docs-section">
+                        <h2>Humanizer API</h2>
+                        <p>Transform code to match your personal style.</p>
+
+                        <div class="code-block">
+                            <code>use apexcode_humanizer::ApexHumanizer;
+
+fn main() -> anyhow::Result<()> {
+    let humanizer = ApexHumanizer::new();
+    let repo_path = std::env::current_dir()?;
+
+    // Learn style profile from git history
+    let profile = humanizer.learn_style(&repo_path)?;
+
+    // Use it to humanize code
+    // let humanized_code = humanizer.humanize(&code_block, &profile)?;
+
+    Ok(())
+}</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section id="undercover-api" class="docs-section">
+                        <h2>Undercover API</h2>
+                        <p>Apply adversarial stylometry transformations.</p>
+
+                        <div class="code-block">
+                            <code>use apexcode_undercover::UndercoverTransformer;
+
+fn main() -> anyhow::Result<()> {
+    let transformer = UndercoverTransformer::new();
+
+    // Transform commit message
+    let original = "feat: Implement comprehensive user authentication";
+    let transformed = transformer.transform_message(original)?;
+
+    println!("Original: {}", original);
+    println!("Transformed: {}", transformed);
+
+    Ok(())
+}</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section id="jitter-api" class="docs-section">
+                        <h2>Jitter API</h2>
+                        <p>Add temporal obfuscation to simulate organic development pace.</p>
+
+                        <div class="code-block">
+                            <code>use apexcode_jitter::JitterEngine;
+
+fn main() -> anyhow::Result<()> {
+    let jitter = JitterEngine::new(60, 300); // min 60s, max 300s
+
+    // Get a random delay
+    let delay = jitter.random_delay();
+    println!("Waiting {} seconds...", delay.as_secs());
+
+    std::thread::sleep(delay);
+
+    Ok(())
+}</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section id="core-types" class="docs-section">
+                        <h2>Core Types</h2>
+                        <p>Common types used across all ApexCode crates.</p>
+
+                        <div class="command-list">
+                            <div class="command-item">
+                                <h4>CodeBlock</h4>
+                                <p>Represents a block of code with metadata including path, language, content, and line range.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Language</h4>
+                                <p>Enum representing supported programming languages (Rust, Python, JavaScript, TypeScript, Go, C++).</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>DetectionResult</h4>
+                                <p>Result of AI detection including probability score, detected patterns, and confidence level.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>StyleProfile</h4>
+                                <p>Learned coding style profile including naming conventions, comment patterns, and formatting preferences.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="documentation" class="docs-section">
+                        <h2>Full Documentation</h2>
+                        <p>For extensive API documentation with examples, run:</p>
+                        <div class="code-block">
+                            <code>cargo doc --open</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <p>This will generate and open the Rust documentation in your browser.</p>
+                    </section>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>ApexCode. Built with <span class="heart">♥</span> by Mohamed Alieu Jagitay</p>
+                <p>MIT License</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+
+        const sections = document.querySelectorAll('.docs-section[id]');
+        const navLinks = document.querySelectorAll('.docs-sidebar a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

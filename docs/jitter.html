@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporal Obfuscation - ApexCode</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem; color: inherit;">
+                    <svg width="32" height="32" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="256" height="256" rx="56" fill="#050505"/>
+                        <rect x="2" y="2" width="252" height="252" rx="54" stroke="#ffffff" stroke-opacity="0.1" stroke-width="2"/>
+                        <circle cx="128" cy="136" r="80" stroke="#ffffff" stroke-opacity="0.03" stroke-width="2"/>
+                        <path d="M128 64 L92 128 L164 128 Z" fill="#ffffff" fill-opacity="0.15"/>
+                        <path d="M128 64 L56 192 L200 192 Z" stroke="#ffffff" stroke-width="16" stroke-linejoin="round"/>
+                        <path d="M92 128 L164 128" stroke="#ffffff" stroke-width="16" stroke-cap="round"/>
+                    </svg>
+                    <span>ApexCode</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="getting-started.html" class="active">Docs</a>
+                <a href="https://github.com/mohamedalieujagitay/ApexCode" class="nav-github">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <div class="sidebar-section">
+                        <h3>Getting Started</h3>
+                        <ul>
+                            <li><a href="getting-started.html#installation">Installation</a></li>
+                            <li><a href="getting-started.html#quick-start">Quick Start</a></li>
+                            <li><a href="getting-started.html#basic-commands">Basic Commands</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li><a href="detection.html">AI Detection</a></li>
+                            <li><a href="humanization.html">Code Humanization</a></li>
+                            <li><a href="#overview" class="active">Temporal Obfuscation</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3>Advanced</h3>
+                        <ul>
+                            <li><a href="undercover.html">Undercover Mode</a></li>
+                            <li><a href="configuration.html">Configuration</a></li>
+                            <li><a href="api.html">API Reference</a></li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <article class="docs-content">
+                    <h1>Temporal Obfuscation (Jitter)</h1>
+                    <p class="docs-intro">Simulate organic development pace to avoid timing-based detection.</p>
+
+                    <section id="overview" class="docs-section">
+                        <h2>Overview</h2>
+                        <p>ApexCode's Jitter engine introduces artificial delays between operations to simulate human coding cadences. This helps avoid timing-based developer analytics that can identify AI-assisted development patterns.</p>
+                    </section>
+
+                    <section id="how-it-works" class="docs-section">
+                        <h2>How It Works</h2>
+                        <p>The Jitter engine uses a delayed staging buffer with configurable timing windows:</p>
+
+                        <div class="command-list">
+                            <div class="command-item">
+                                <h4>Delayed Staging</h4>
+                                <p>Files are staged with random delays between operations.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Configurable Windows</h4>
+                                <p>Set minimum and maximum delay times to match your typical workflow.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Random Distribution</h4>
+                                <p>Delays are randomly distributed within the configured range for natural variation.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Commit Spacing</h4>
+                                <p>Automatically spaces commits to avoid rapid-fire patterns.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="enabling-jitter" class="docs-section">
+                        <h2>Enabling Jitter</h2>
+
+                        <h3>Configuration</h3>
+                        <p>Add the following to your <code>.apexcode/config.toml</code>:</p>
+                        <div class="code-block">
+                            <code>[jitter]
+enabled = true
+min_delay_secs = 60
+max_delay_secs = 300</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <h3>Using Jitter</h3>
+                        <p>Once enabled, jitter automatically applies to:</p>
+                        <ul>
+                            <li>File staging operations</li>
+                            <li>Commit creation</li>
+                            <li>Code humanization</li>
+                        </ul>
+                    </section>
+
+                    <section id="timing-configuration" class="docs-section">
+                        <h2>Timing Configuration</h2>
+                        <p>Choose timing windows that match your typical development pace:</p>
+
+                        <div class="config-options">
+                            <div class="config-option">
+                                <h4>Conservative (30-120s)</h4>
+                                <p>For developers who work in short bursts</p>
+                            </div>
+                            <div class="config-option">
+                                <h4>Moderate (60-300s)</h4>
+                                <p>For typical development workflows (default)</p>
+                            </div>
+                            <div class="config-option">
+                                <h4>Extended (120-600s)</h4>
+                                <p>For developers who take longer between changes</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="use-cases" class="docs-section">
+                        <h2>Use Cases</h2>
+
+                        <div class="command-list">
+                            <div class="command-item">
+                                <h4>Open Source Contributions</h4>
+                                <p>Make your contributions appear more organic when working on public projects.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Team Projects</h4>
+                                <p>Avoid standing out with unusually rapid commit patterns.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Code Reviews</h4>
+                                <p>Space out changes to match typical review cycles.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Long-running Features</h4>
+                                <p>Simulate natural development progression over time.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="limitations" class="docs-section">
+                        <h2>Limitations</h2>
+                        <div class="info-box">
+                            <strong>Important:</strong> Jitter only affects timing, not code content. For complete protection, combine with detection and humanization features.
+                        </div>
+                        <ul>
+                            <li>Does not modify code content</li>
+                            <li>Requires enabled configuration</li>
+                            <li>May slow down your workflow</li>
+                            <li>Not effective for single-commit changes</li>
+                        </ul>
+                    </section>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>ApexCode. Built with <span class="heart">♥</span> by Mohamed Alieu Jagitay</p>
+                <p>MIT License</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+
+        const sections = document.querySelectorAll('.docs-section[id]');
+        const navLinks = document.querySelectorAll('.docs-sidebar a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+torch
+transformers
+datasets
+trl
+accelerate
+tqdm
+matplotlib
+numpy

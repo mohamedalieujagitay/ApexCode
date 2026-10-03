@@ -1,0 +1,29 @@
+ApexCode
+Copyright (c) 2026 Mohamed Alieu Jagitay
+
+ApexCode is a single toolkit built on and modified from the following
+open-source works. Their copyright notices and licenses are retained in
+LICENSE as their terms require.
+
+1. ai-humanizer
+   Copyright (c) 2026 Ofer Shapira
+   https://github.com/ofershap/ai-humanizer
+   License: MIT
+   Used in: skills/apexcode/SKILL.md (writing rules), rules/, commands/audit.md,
+   scripts/validate.mjs, plugin manifests.
+
+2. PhantomDev
+   Copyright (c) 2026 John Varghese
+   https://github.com/John-Varghese-EH/PhantomDev
+   License: Apache License 2.0
+   Used in: crates/, scripts/ (pre-commit hooks, installer), docs/,
+   IDE rule files, .github/ workflows and community files.
+   Modifications: renamed crates, binaries, types and paths to ApexCode;
+   merged agent instructions into the single ApexCode skill and rule.
+
+3. MASH: Evading Black-Box AI-Generated Text Detectors via Style Humanization
+   Yongtong Gu, Songze Li, Xia Hu. Findings of ACL 2026.
+   https://arxiv.org/abs/2601.08564
+   License: released by its authors for research purposes only.
+   Used in: training/ (the four-stage pipeline and framework.png).
+   Modifications: help text and docstrings point to the paper generically.

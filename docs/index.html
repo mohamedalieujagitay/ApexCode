@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApexCode - Adversarial Stylometry Framework</title>
+    <meta name="description"
+        content="Humanizer for AI Agents & Commits - Preserve your coding signature in the age of AI">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <svg width="32" height="32" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="256" height="256" rx="56" fill="#050505" />
+                    <rect x="2" y="2" width="252" height="252" rx="54" stroke="#ffffff" stroke-opacity="0.1"
+                        stroke-width="2" />
+                    <circle cx="128" cy="136" r="80" stroke="#ffffff" stroke-opacity="0.03" stroke-width="2" />
+                    <path d="M128 64 L92 128 L164 128 Z" fill="#ffffff" fill-opacity="0.15" />
+                    <path d="M128 64 L56 192 L200 192 Z" stroke="#ffffff" stroke-width="16" stroke-linejoin="round" />
+                    <path d="M92 128 L164 128" stroke="#ffffff" stroke-width="16" stroke-linecap="round" />
+                </svg>
+                <span>ApexCode</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#install">Install</a>
+                <a href="#docs">Docs</a>
+                <a href="https://github.com/mohamedalieujagitay/ApexCode" class="nav-github">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                    </svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container hero-inner">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    v0.1.0 on crates.io
+                </div>
+                <h1 class="hero-title">
+                    <span class="gradient-text">ApexCode</span>
+                </h1>
+                <p class="hero-subtitle">Adversarial Stylometry Framework for the AI-Augmented Developer</p>
+                <p class="hero-description">Inject human entropy back into your workflow. Preserve your coding signature
+                    in the age of AI.</p>
+                <div class="hero-actions">
+                    <a href="#install" class="btn btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Get Started
+                    </a>
+                    <a href="https://github.com/mohamedalieujagitay/ApexCode" class="btn btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                        </svg>
+                        View Source
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-value">7</span>
+                        <span class="stat-label">Crates</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">Rust</span>
+                        <span class="stat-label">Built with</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">MIT</span>
+                        <span class="stat-label">License</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="terminal-buttons">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <span class="terminal-title">apexcode</span>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="terminal-line">
+                            <span class="prompt">$</span>
+                            <span class="command">apexcode scan</span>
+                        </div>
+                        <div class="terminal-line output">
+                            <span class="success">✓</span> Scanning 12 files...
+                        </div>
+                        <div class="terminal-line output">
+                            <span class="info">→</span> AI probability: 0.23
+                        </div>
+                        <div class="terminal-line output">
+                            <span class="warning">!</span> 3 patterns detected
+                        </div>
+                        <div class="terminal-line">
+                            <span class="prompt">$</span>
+                            <span class="command">apexcode humanize</span>
+                        </div>
+                        <div class="terminal-line output">
+                            <span class="success">✓</span> Humanized 8 files
+                        </div>
+                        <div class="terminal-line output">
+                            <span class="info">→</span> Stealth score: 0.87
+                        </div>
+                        <div class="terminal-line">
+                            <span class="prompt">$</span>
+                            <span class="cursor">_</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Features</h2>
+                <p>Everything you need to maintain your coding identity</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                            <line x1="12" y1="22.08" x2="12" y2="12" />
+                        </svg>
+                    </div>
+                    <h3>AI Detection</h3>
+                    <p>Local inference using RoBERTa-based models with cloud fallback. Detect watermarks, uniform
+                        commenting, and emoji overuse.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" />
+                            <path d="M12 6v6l4 2" />
+                        </svg>
+                    </div>
+                    <h3>Code Humanization</h3>
+                    <p>Repository-aware style learning from your commit history. Transform variable names, comments, and
+                        code structure to match your style.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                        </svg>
+                    </div>
+                    <h3>Temporal Obfuscation</h3>
+                    <p>Jitter engine with delayed staging buffer to simulate organic development pace and avoid
+                        commit-frequency fingerprinting.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 6v6l4 2" />
+                        </svg>
+                    </div>
+                    <h3>Stealth Scoring</h3>
+                    <p>Real-time per-file stealth score with pattern-based breakdown of detected AI signatures and
+                        threshold-configurable alerting.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                            <line x1="8" y1="21" x2="16" y2="21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                        </svg>
+                    </div>
+                    <h3>TUI Dashboard</h3>
+                    <p>Terminal UI for live stealth score monitoring with detection heatmap per file and style profile
+                        visualization.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" />
+                            <line x1="16" y1="8" x2="2" y2="22" />
+                            <line x1="17.5" y1="15" x2="9" y2="15" />
+                        </svg>
+                    </div>
+                    <h3>Undercover Mode</h3>
+                    <p>Commit message transformation and code comment rewriting with adversarial stylometry to bypass
+                        AI-detection filters.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="install" class="install">
+        <div class="container">
+            <div class="section-header">
+                <h2>Installation</h2>
+                <p>Get up and running in seconds</p>
+            </div>
+            <div class="install-methods">
+                <div class="install-card active">
+                    <div class="install-header">
+                        <h3>One-Click Installer</h3>
+                        <span class="install-badge">Recommended</span>
+                    </div>
+                    <div class="code-block">
+                        <code>curl -sSL https://mohamedalieujagitay.github.io/ApexCode/install.sh | bash</code>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="install-card">
+                    <div class="install-header">
+                        <h3>From Source</h3>
+                    </div>
+                    <div class="code-block">
+                        <code>git clone https://github.com/mohamedalieujagitay/ApexCode.git
+cd apexcode
+cargo build --release
+cargo install --path crates/cli</code>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="install-card">
+                    <div class="install-header">
+                        <h3>From crates.io</h3>
+                    </div>
+                    <div class="code-block">
+                        <code>cargo install apexcode</code>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="docs" class="docs">
+        <div class="container">
+            <div class="section-header">
+                <h2>Documentation</h2>
+                <p>Deep dive into ApexCode</p>
+            </div>
+            <div class="docs-grid">
+                <a href="getting-started.html" class="doc-link">
+                    <div class="doc-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                            <line x1="16" y1="13" x2="8" y2="13" />
+                            <line x1="16" y1="17" x2="8" y2="17" />
+                            <polyline points="10 9 9 9 8 9" />
+                        </svg>
+                    </div>
+                    <div class="doc-content">
+                        <h3>Getting Started</h3>
+                        <p>Quick start guide and basic usage</p>
+                    </div>
+                    <svg class="doc-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                </a>
+                <a href="configuration.html" class="doc-link">
+                    <div class="doc-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="3" />
+                            <path
+                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                        </svg>
+                    </div>
+                    <div class="doc-content">
+                        <h3>Configuration</h3>
+                        <p>Customize detection and humanization settings</p>
+                    </div>
+                    <svg class="doc-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                </a>
+                <a href="undercover.html" class="doc-link">
+                    <div class="doc-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                    </div>
+                    <div class="doc-content">
+                        <h3>Undercover Mode</h3>
+                        <p>Advanced adversarial stylometry techniques</p>
+                    </div>
+                    <svg class="doc-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                </a>
+                <a href="api.html" class="doc-link">
+                    <div class="doc-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="16 18 22 12 16 6" />
+                            <polyline points="8 6 2 12 8 18" />
+                        </svg>
+                    </div>
+                    <div class="doc-content">
+                        <h3>API Reference</h3>
+                        <p>Complete API documentation</p>
+                    </div>
+                    <svg class="doc-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="graph-section">
+        <div class="graph-section-header">
+            <h2>Codebase Architecture</h2>
+            <p>Interactive knowledge graph of the ApexCode codebase</p>
+        </div>
+        <div class="graph-embed">
+            <iframe src="graph.html" id="codebase-graph" title="ApexCode Codebase Graph" scrolling="no"
+                frameborder="0" allowtransparency="true">
+            </iframe>
+            <div class="graph-overlay" id="graph-overlay">
+                <div class="graph-overlay-hint">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <path d="M4 9a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z" />
+                        <circle cx="12" cy="12" r="2.5" fill="currentColor" />
+                        <path d="M12 5v1M12 18v1M5 12h1M18 12h1" />
+                    </svg>
+                    <span>Click to interact with graph</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to reclaim your coding identity?</h2>
+            <p>Join developers who are preserving their unique coding signature.</p>
+            <div class="cta-actions">
+                <a href="https://github.com/mohamedalieujagitay/ApexCode" class="btn btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                    </svg>
+                    Star on GitHub
+                </a>
+                <a href="https://crates.io/crates/apexcode" class="btn btn-secondary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                    View on crates.io
+                </a>
+                <a href="https://docs.rs/apexcode" class="btn btn-secondary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z" />
+                    </svg>
+                    Read Docs
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <svg width="24" height="24" viewBox="0 0 256 256" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <rect width="256" height="256" rx="56" fill="#050505" />
+                            <rect x="2" y="2" width="252" height="252" rx="54" stroke="#ffffff" stroke-opacity="0.1"
+                                stroke-width="2" />
+                            <circle cx="128" cy="136" r="80" stroke="#ffffff" stroke-opacity="0.03" stroke-width="2" />
+                            <path d="M128 64 L92 128 L164 128 Z" fill="#ffffff" fill-opacity="0.15" />
+                            <path d="M128 64 L56 192 L200 192 Z" stroke="#ffffff" stroke-width="16"
+                                stroke-linejoin="round" />
+                            <path d="M92 128 L164 128" stroke="#ffffff" stroke-width="16" stroke-linecap="round" />
+                        </svg>
+                        <span>ApexCode</span>
+                    </div>
+                    <p>Adversarial Stylometry Framework for the AI-Augmented Developer</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>Project</h4>
+                        <a href="https://github.com/mohamedalieujagitay/ApexCode">GitHub</a>
+                        <a href="https://crates.io/crates/apexcode">crates.io</a>
+                        <a href="https://github.com/mohamedalieujagitay/ApexCode/issues">Issues</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Documentation</h4>
+                        <a href="getting-started.html">Getting Started</a>
+                        <a href="configuration.html">Configuration</a>
+                        <a href="api.html">API Reference</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Community</h4>
+                        <a href="https://github.com/mohamedalieujagitay/ApexCode/discussions">Discussions</a>
+                        <a
+                            href="https://github.com/mohamedalieujagitay/ApexCode/blob/main/CONTRIBUTING.md">Contributing</a>
+                        <a href="https://github.com/sponsors/mohamedalieujagitay">Sponsor</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-disclaimer">
+                <p><strong>For Educational and Experimental Purposes Only.</strong> ApexCode is provided "as is" to explore adversarial stylometry and help developers protect their coding signatures. It is not intended to bypass integrity systems, cheat in evaluations, or be used maliciously. The author (Mohamed Alieu Jagitay) and contributors are not liable for any misuse of this tool or any consequences arising from its usage. Use responsibly.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>ApexCode. Built with <span class="heart">♥</span> by Mohamed Alieu Jagitay</p>
+                <p>Apache 2.0 License</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        const graphIframe = document.getElementById('codebase-graph');
+        const graphOverlay = document.getElementById('graph-overlay');
+        const graphEmbed = document.querySelector('.graph-embed');
+
+        function pauseGraphTour() {
+            try {
+                const iWin = graphIframe.contentWindow;
+                iWin.apexPaused = true;
+                if (iWin.stopTour) iWin.stopTour();
+            } catch (e) { }
+        }
+
+        function resumeGraphTour() {
+            try {
+                const iWin = graphIframe.contentWindow;
+                iWin.apexPaused = false;
+                if (iWin.startTour) setTimeout(() => iWin.startTour(), 600);
+            } catch (e) { }
+        }
+
+        // Click overlay → activate interaction, pause tour
+        graphOverlay.addEventListener('click', () => {
+            pauseGraphTour();
+            graphOverlay.classList.add('hidden');
+            graphIframe.style.pointerEvents = 'auto';
+        });
+
+        // Click outside graph → restore scroll guard + resume tour
+        document.addEventListener('click', (e) => {
+            if (!graphEmbed.contains(e.target)) {
+                resumeGraphTour();
+                graphOverlay.classList.remove('hidden');
+                graphIframe.style.pointerEvents = 'none';
+            }
+        });
+
+        // Escape → deactivates + resumes tour
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                resumeGraphTour();
+                graphOverlay.classList.remove('hidden');
+                graphIframe.style.pointerEvents = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>

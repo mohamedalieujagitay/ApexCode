@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Humanization - ApexCode</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem; color: inherit;">
+                    <svg width="32" height="32" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="256" height="256" rx="56" fill="#050505"/>
+                        <rect x="2" y="2" width="252" height="252" rx="54" stroke="#ffffff" stroke-opacity="0.1" stroke-width="2"/>
+                        <circle cx="128" cy="136" r="80" stroke="#ffffff" stroke-opacity="0.03" stroke-width="2"/>
+                        <path d="M128 64 L92 128 L164 128 Z" fill="#ffffff" fill-opacity="0.15"/>
+                        <path d="M128 64 L56 192 L200 192 Z" stroke="#ffffff" stroke-width="16" stroke-linejoin="round"/>
+                        <path d="M92 128 L164 128" stroke="#ffffff" stroke-width="16" stroke-cap="round"/>
+                    </svg>
+                    <span>ApexCode</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="getting-started.html" class="active">Docs</a>
+                <a href="https://github.com/mohamedalieujagitay/ApexCode" class="nav-github">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <div class="sidebar-section">
+                        <h3>Getting Started</h3>
+                        <ul>
+                            <li><a href="getting-started.html#installation">Installation</a></li>
+                            <li><a href="getting-started.html#quick-start">Quick Start</a></li>
+                            <li><a href="getting-started.html#basic-commands">Basic Commands</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li><a href="detection.html">AI Detection</a></li>
+                            <li><a href="#overview" class="active">Code Humanization</a></li>
+                            <li><a href="jitter.html">Temporal Obfuscation</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3>Advanced</h3>
+                        <ul>
+                            <li><a href="undercover.html">Undercover Mode</a></li>
+                            <li><a href="configuration.html">Configuration</a></li>
+                            <li><a href="api.html">API Reference</a></li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <article class="docs-content">
+                    <h1>Code Humanization</h1>
+                    <p class="docs-intro">Transform AI-generated code to match your personal coding style.</p>
+
+                    <section id="overview" class="docs-section">
+                        <h2>Overview</h2>
+                        <p>ApexCode's humanization engine learns your personal coding style from your repository history and applies it back to AI-assisted output. This helps maintain your unique coding signature while using AI tools.</p>
+                    </section>
+
+                    <section id="how-it-works" class="docs-section">
+                        <h2>How It Works</h2>
+                        <p>The humanization engine analyzes your past commits to learn:</p>
+
+                        <div class="command-list">
+                            <div class="command-item">
+                                <h4>Naming Conventions</h4>
+                                <p>How you name variables, functions, and classes (camelCase, snake_case, abbreviations).</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Comment Style</h4>
+                                <p>Your comment patterns, verbosity, and preferred documentation style.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Code Structure</h4>
+                                <p>Your preferred code organization and formatting patterns.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Line Cadence</h4>
+                                <p>Typical line lengths and code density patterns.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="using-humanization" class="docs-section">
+                        <h2>Using Humanization</h2>
+
+                        <h3>Humanize Staged Files</h3>
+                        <div class="code-block">
+                            <code>apexcode humanize</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <h3>Humanize Specific Files</h3>
+                        <div class="code-block">
+                            <code>apexcode humanize --files src/main.rs</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <h3>Control Entropy Level</h3>
+                        <div class="code-block">
+                            <code>apexcode humanize --entropy 0.7</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <h3>Dry Run</h3>
+                        <div class="code-block">
+                            <code>apexcode humanize --dry-run</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section id="transformations" class="docs-section">
+                        <h2>Transformations</h2>
+                        <p>The humanization engine applies the following transformations:</p>
+
+                        <div class="command-list">
+                            <div class="command-item">
+                                <h4>Variable Renaming</h4>
+                                <p>Rename variables to match your personal naming conventions.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Comment Injection</h4>
+                                <p>Add or remove comments to match your style.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Code Restructuring</h4>
+                                <p>Reorganize code to match your preferred structure.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Entropy Injection</h4>
+                                <p>Add natural variation to avoid predictable patterns.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="entropy-levels" class="docs-section">
+                        <h2>Entropy Levels</h2>
+                        <p>Control the intensity of transformations with the entropy parameter:</p>
+
+                        <div class="config-options">
+                            <div class="config-option">
+                                <h4>0.0 - 0.3</h4>
+                                <p>Minimal changes - Only obvious AI patterns are modified</p>
+                            </div>
+                            <div class="config-option">
+                                <h4>0.3 - 0.7</h4>
+                                <p>Moderate changes - Balanced transformation (default)</p>
+                            </div>
+                            <div class="config-option">
+                                <h4>0.7 - 1.0</h4>
+                                <p>Aggressive changes - Maximum humanization</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="examples" class="docs-section">
+                        <h2>Examples</h2>
+
+                        <h3>Before (AI-generated)</h3>
+                        <div class="code-block">
+                            <code>// This function processes user input data
+// It validates the input and returns a result
+function processUserData(userData) {
+    // Check if user data is valid
+    if (!userData || !userData.id) {
+        return null;
+    }
+    // Return the processed data
+    return {
+        id: userData.id,
+        name: userData.name,
+        processed: true
+    };
+}</code>
+                        </div>
+
+                        <h3>After (Humanized)</h3>
+                        <div class="code-block">
+                            <code>function handleUser(data) {
+    if (!data?.id) return null;
+    return { id: data.id, name: data.name, ok: true };
+}</code>
+                        </div>
+                    </section>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>ApexCode. Built with <span class="heart">♥</span> by Mohamed Alieu Jagitay</p>
+                <p>MIT License</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+
+        const sections = document.querySelectorAll('.docs-section[id]');
+        const navLinks = document.querySelectorAll('.docs-sidebar a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

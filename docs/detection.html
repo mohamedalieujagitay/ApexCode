@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Detection - ApexCode</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem; color: inherit;">
+                    <svg width="32" height="32" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="256" height="256" rx="56" fill="#050505"/>
+                        <rect x="2" y="2" width="252" height="252" rx="54" stroke="#ffffff" stroke-opacity="0.1" stroke-width="2"/>
+                        <circle cx="128" cy="136" r="80" stroke="#ffffff" stroke-opacity="0.03" stroke-width="2"/>
+                        <path d="M128 64 L92 128 L164 128 Z" fill="#ffffff" fill-opacity="0.15"/>
+                        <path d="M128 64 L56 192 L200 192 Z" stroke="#ffffff" stroke-width="16" stroke-linejoin="round"/>
+                        <path d="M92 128 L164 128" stroke="#ffffff" stroke-width="16" stroke-cap="round"/>
+                    </svg>
+                    <span>ApexCode</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="getting-started.html" class="active">Docs</a>
+                <a href="https://github.com/mohamedalieujagitay/ApexCode" class="nav-github">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <div class="sidebar-section">
+                        <h3>Getting Started</h3>
+                        <ul>
+                            <li><a href="getting-started.html#installation">Installation</a></li>
+                            <li><a href="getting-started.html#quick-start">Quick Start</a></li>
+                            <li><a href="getting-started.html#basic-commands">Basic Commands</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li><a href="#overview" class="active">AI Detection</a></li>
+                            <li><a href="humanization.html">Code Humanization</a></li>
+                            <li><a href="jitter.html">Temporal Obfuscation</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3>Advanced</h3>
+                        <ul>
+                            <li><a href="undercover.html">Undercover Mode</a></li>
+                            <li><a href="configuration.html">Configuration</a></li>
+                            <li><a href="api.html">API Reference</a></li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <article class="docs-content">
+                    <h1>AI Detection</h1>
+                    <p class="docs-intro">Detect AI-generated code patterns with local ML models and cloud fallback.</p>
+
+                    <section id="overview" class="docs-section">
+                        <h2>Overview</h2>
+                        <p>ApexCode's detection engine analyzes code for patterns typical of AI-generated content. It uses a combination of local ML models and pattern-based detection to identify code that doesn't "look human."</p>
+                    </section>
+
+                    <section id="how-it-works" class="docs-section">
+                        <h2>How It Works</h2>
+                        <p>The detection engine uses multiple approaches to identify AI-generated code:</p>
+
+                        <div class="command-list">
+                            <div class="command-item">
+                                <h4>Local ML Models</h4>
+                                <p>RoBERTa-based models trained on code to detect AI-generated patterns. Runs entirely on your machine with no network required.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Pattern Detection</h4>
+                                <p>Identifies common AI tells: watermarks, uniform commenting, emoji overuse, and predictable variable naming.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Cloud Fallback</h4>
+                                <p>Optional cloud API integration via OpenRouter and Anthropic for enhanced detection accuracy.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="using-detection" class="docs-section">
+                        <h2>Using Detection</h2>
+
+                        <h3>Scan Staged Files</h3>
+                        <div class="code-block">
+                            <code>apexcode scan</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <h3>Scan Specific Files</h3>
+                        <div class="code-block">
+                            <code>apexcode scan --files src/main.rs src/lib.rs</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <h3>Verbose Output</h3>
+                        <div class="code-block">
+                            <code>apexcode scan --verbose</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section id="detected-patterns" class="docs-section">
+                        <h2>Detected Patterns</h2>
+                        <p>ApexCode can detect the following AI-generated patterns:</p>
+
+                        <div class="command-list">
+                            <div class="command-item">
+                                <h4>Watermarks</h4>
+                                <p>Hidden patterns embedded by some AI models to identify generated content.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Uniform Commenting</h4>
+                                <p>Overly consistent comment style and excessive documentation.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Emoji Overuse</h4>
+                                <p>Excessive or inappropriate emoji usage in code comments.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Predictable Naming</h4>
+                                <p>Variable and function names that follow AI-generated patterns.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Structural Patterns</h4>
+                                <p>Code structure that matches common AI output templates.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="detection-score" class="docs-section">
+                        <h2>Understanding the Score</h2>
+                        <p>The detection engine returns a probability score from 0.0 to 1.0:</p>
+
+                        <div class="config-options">
+                            <div class="config-option">
+                                <h4>0.0 - 0.15</h4>
+                                <p>Low probability - Code appears human-written</p>
+                            </div>
+                            <div class="config-option">
+                                <h4>0.15 - 0.50</h4>
+                                <p>Medium probability - Some AI patterns detected</p>
+                            </div>
+                            <div class="config-option">
+                                <h4>0.50 - 1.0</h4>
+                                <p>High probability - Code likely AI-generated</p>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <strong>Note:</strong> The threshold can be configured in your <code>.apexcode/config.toml</code> file.
+                        </div>
+                    </section>
+
+                    <section id="supported-languages" class="docs-section">
+                        <h2>Supported Languages</h2>
+                        <p>ApexCode supports detection for the following programming languages:</p>
+                        <ul>
+                            <li>Rust</li>
+                            <li>Python</li>
+                            <li>JavaScript</li>
+                            <li>TypeScript</li>
+                            <li>Go</li>
+                            <li>C++</li>
+                        </ul>
+                    </section>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>ApexCode. Built with <span class="heart">♥</span> by Mohamed Alieu Jagitay</p>
+                <p>MIT License</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+
+        const sections = document.querySelectorAll('.docs-section[id]');
+        const navLinks = document.querySelectorAll('.docs-sidebar a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

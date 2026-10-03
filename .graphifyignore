@@ -1,0 +1,65 @@
+# ApexCode .graphifyignore
+# This file tells graphify which files to ignore when building knowledge graphs
+
+# Ignore build artifacts
+/target/
+/dist/
+/build/
+/out/
+
+# Ignore dependency directories
+node_modules/
+vendor/
+.venv/
+venv/
+
+# Ignore cache directories
+.cache/
+*.cache/
+__pycache__/
+.pytest_cache/
+
+# Ignore temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# Ignore generated files
+*.generated.*
+*.pb.go
+*.pb.rs
+
+# Ignore test files
+**/tests/**
+**/test_*.py
+**/*_test.go
+**/*_test.rs
+
+# Ignore documentation
+**/docs/**
+**/*.md
+!README.md
+
+# Ignore configuration files
+**/.env*
+**/config/*.local.*
+
+# Ignore logs
+**/logs/**
+*.log
+
+# Ignore IDE files
+.vscode/
+.idea/
+.cursor/
+.claude/
+
+# Ignore git files
+.git/
+.gitignore
+
+# Ignore ApexCode internal files
+.apexcode/
+graphify-out/

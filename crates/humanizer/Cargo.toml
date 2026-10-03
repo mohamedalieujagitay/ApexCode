@@ -1,0 +1,38 @@
+[package]
+name = "apexcode-humanizer"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+readme.workspace = true
+repository.workspace = true
+description.workspace = true
+keywords.workspace = true
+categories.workspace = true
+homepage.workspace = true
+
+[dependencies]
+apexcode-core = { path = "../core", version = "1.0.0" }
+
+tokio.workspace = true
+serde.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+regex.workspace = true
+
+# Git
+git2.workspace = true
+
+# Language parsers
+syn.workspace = true
+tree-sitter.workspace = true
+tree-sitter-python.workspace = true
+tree-sitter-javascript.workspace = true
+tree-sitter-go.workspace = true
+tree-sitter-cpp.workspace = true
+
+# File walking
+walkdir = "2.4"
+
+# Randomness
+rand = "0.8"

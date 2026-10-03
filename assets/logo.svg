@@ -1,0 +1,17 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- App Icon Base -->
+    <rect width="256" height="256" rx="56" fill="#050505"/>
+    <rect x="2" y="2" width="252" height="252" rx="54" stroke="#ffffff" stroke-opacity="0.1" stroke-width="2"/>
+    
+    <!-- Subtle background ring for depth -->
+    <circle cx="128" cy="136" r="80" stroke="#ffffff" stroke-opacity="0.03" stroke-width="2"/>
+    
+    <!-- Top inner filled with a subtle glow effect -->
+    <path d="M128 64 L92 128 L164 128 Z" fill="#ffffff" fill-opacity="0.15"/>
+    
+    <!-- Outer Triangle -->
+    <path d="M128 64 L56 192 L200 192 Z" stroke="#ffffff" stroke-width="16" stroke-linejoin="round"/>
+    
+    <!-- Horizontal Line -->
+    <path d="M92 128 L164 128" stroke="#ffffff" stroke-width="16" stroke-linecap="round"/>
+</svg>

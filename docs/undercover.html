@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undercover Mode - ApexCode</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem; color: inherit;">
+                    <svg width="32" height="32" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="256" height="256" rx="56" fill="#050505"/>
+                        <rect x="2" y="2" width="252" height="252" rx="54" stroke="#ffffff" stroke-opacity="0.1" stroke-width="2"/>
+                        <circle cx="128" cy="136" r="80" stroke="#ffffff" stroke-opacity="0.03" stroke-width="2"/>
+                        <path d="M128 64 L92 128 L164 128 Z" fill="#ffffff" fill-opacity="0.15"/>
+                        <path d="M128 64 L56 192 L200 192 Z" stroke="#ffffff" stroke-width="16" stroke-linejoin="round"/>
+                        <path d="M92 128 L164 128" stroke="#ffffff" stroke-width="16" stroke-cap="round"/>
+                    </svg>
+                    <span>ApexCode</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="getting-started.html" class="active">Docs</a>
+                <a href="https://github.com/mohamedalieujagitay/ApexCode" class="nav-github">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <div class="sidebar-section">
+                        <h3>Getting Started</h3>
+                        <ul>
+                            <li><a href="getting-started.html#installation">Installation</a></li>
+                            <li><a href="getting-started.html#quick-start">Quick Start</a></li>
+                            <li><a href="getting-started.html#basic-commands">Basic Commands</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li><a href="detection.html">AI Detection</a></li>
+                            <li><a href="humanization.html">Code Humanization</a></li>
+                            <li><a href="jitter.html">Temporal Obfuscation</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3>Advanced</h3>
+                        <ul>
+                            <li><a href="#what-is-undercover" class="active">Undercover Mode</a></li>
+                            <li><a href="configuration.html">Configuration</a></li>
+                            <li><a href="api.html">API Reference</a></li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <article class="docs-content">
+                    <h1>Undercover Mode</h1>
+                    <p class="docs-intro">Advanced adversarial stylometry techniques to maintain your authorship.</p>
+
+                    <section id="what-is-undercover" class="docs-section">
+                        <h2>What is Undercover Mode?</h2>
+                        <p>Undercover Mode takes code humanization to the next level by specifically targeting structural fingerprints often left by Large Language Models. It actively modifies code syntax, comments, and commit messages to align perfectly with your past Git history.</p>
+                    </section>
+
+                    <section id="using-undercover" class="docs-section">
+                        <h2>Using Undercover</h2>
+
+                        <h3>Transform Commit Messages</h3>
+                        <p>LLMs tend to write highly structured and predictable commit messages (e.g., using rigid Conventional Commits perfectly). Undercover mode breaks this rigidity:</p>
+                        <div class="code-block">
+                            <code>apexcode undercover --message "feat: Implement comprehensive user authentication"</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <p>This will rewrite the message into something more organically human based on your repository history.</p>
+
+                        <h3>Rewrite Comments</h3>
+                        <p>AI writes overly enthusiastic and descriptive comments. You can tone them down and rephrase them:</p>
+                        <div class="code-block">
+                            <code>apexcode undercover --comments</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <h3>Variable Name Substitution</h3>
+                        <p>If you usually name your variables a certain way (e.g., <code>idx</code> instead of <code>index</code>), Undercover Mode will enforce it on AI-generated snippets:</p>
+                        <div class="code-block">
+                            <code>apexcode undercover --variables</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <h3>Combined Power</h3>
+                        <p>You can execute multiple transformations simultaneously before staging your files:</p>
+                        <div class="code-block">
+                            <code>apexcode undercover --comments --variables</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section id="undercover-rules" class="docs-section">
+                        <h2>Stylistic Rules</h2>
+                        <p>Undercover Mode applies the following transformations based on your repository history:</p>
+
+                        <div class="command-list">
+                            <div class="command-item">
+                                <h4>Case Sensitivity</h4>
+                                <p>Prefer lowercase for short descriptions. Use Sentence case only for long explanations.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Punctuation</h4>
+                                <p>Remove terminal periods from 80% of single-line strings.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Vocabulary Filter</h4>
+                                <p>Strictly ban: "comprehensive", "ensure", "robust", "leveraging", "meticulous", "seamless", "enhanced".</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Semantic Compression</h4>
+                                <p>Replace formal words with dev-slang (e.g., "authentication" → "auth", "information" → "info", "utility" → "utils").</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>Grammar</h4>
+                                <p>Accept fragments. Prioritize brevity over "proper" English.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="undercover-examples" class="docs-section">
+                        <h2>Examples</h2>
+
+                        <h3>Before (AI-generated)</h3>
+                        <div class="code-block">
+                            <code>// This function implements comprehensive user authentication
+// It ensures robust security by leveraging JWT tokens
+function authenticateUser(userCredentials) {
+    // Validate the provided information
+    if (!userCredentials) {
+        return null;
+    }
+    // Generate enhanced token
+    return generateToken(userCredentials);
+}</code>
+                        </div>
+
+                        <h3>After (Undercover-transformed)</h3>
+                        <div class="code-block">
+                            <code>// auth check
+function authUser(creds) {
+    if (!creds) return null;
+    return genToken(creds);
+}</code>
+                        </div>
+                    </section>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>ApexCode. Built with <span class="heart">♥</span> by Mohamed Alieu Jagitay</p>
+                <p>MIT License</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+
+        const sections = document.querySelectorAll('.docs-section[id]');
+        const navLinks = document.querySelectorAll('.docs-sidebar a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration - ApexCode</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem; color: inherit;">
+                    <svg width="32" height="32" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="256" height="256" rx="56" fill="#050505"/>
+                        <rect x="2" y="2" width="252" height="252" rx="54" stroke="#ffffff" stroke-opacity="0.1" stroke-width="2"/>
+                        <circle cx="128" cy="136" r="80" stroke="#ffffff" stroke-opacity="0.03" stroke-width="2"/>
+                        <path d="M128 64 L92 128 L164 128 Z" fill="#ffffff" fill-opacity="0.15"/>
+                        <path d="M128 64 L56 192 L200 192 Z" stroke="#ffffff" stroke-width="16" stroke-linejoin="round"/>
+                        <path d="M92 128 L164 128" stroke="#ffffff" stroke-width="16" stroke-cap="round"/>
+                    </svg>
+                    <span>ApexCode</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="getting-started.html" class="active">Docs</a>
+                <a href="https://github.com/mohamedalieujagitay/ApexCode" class="nav-github">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <div class="sidebar-section">
+                        <h3>Getting Started</h3>
+                        <ul>
+                            <li><a href="getting-started.html#installation">Installation</a></li>
+                            <li><a href="getting-started.html#quick-start">Quick Start</a></li>
+                            <li><a href="getting-started.html#basic-commands">Basic Commands</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li><a href="detection.html">AI Detection</a></li>
+                            <li><a href="humanization.html">Code Humanization</a></li>
+                            <li><a href="jitter.html">Temporal Obfuscation</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3>Advanced</h3>
+                        <ul>
+                            <li><a href="undercover.html">Undercover Mode</a></li>
+                            <li><a href="#config-file" class="active">Configuration</a></li>
+                            <li><a href="api.html">API Reference</a></li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <article class="docs-content">
+                    <h1>Configuration</h1>
+                    <p class="docs-intro">Customize ApexCode to match your workflow and preferences.</p>
+
+                    <section id="config-file" class="docs-section">
+                        <h2>Configuration File</h2>
+                        <p>ApexCode reads configuration from <code>.apexcode/config.toml</code> in your project root. Run <code>apexcode init</code> to create a default configuration file.</p>
+                    </section>
+
+                    <section id="detection-config" class="docs-section">
+                        <h2>Detection Settings</h2>
+                        <p>Control how ApexCode detects AI-generated content.</p>
+
+                        <div class="code-block">
+                            <code>[detection]
+threshold = 0.15              # AI probability threshold (0.0 - 1.0)
+use_local = true              # Prioritize local models
+use_cloud_fallback = true     # Fall back to cloud API if local score is uncertain</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="config-options">
+                            <div class="config-option">
+                                <h4>threshold</h4>
+                                <p>The AI probability threshold (0.0 to 1.0). Files with scores above this value are flagged as AI-generated. Default: 0.15</p>
+                            </div>
+                            <div class="config-option">
+                                <h4>use_local</h4>
+                                <p>Whether to use local ML models for detection. Default: true</p>
+                            </div>
+                            <div class="config-option">
+                                <h4>use_cloud_fallback</h4>
+                                <p>Whether to fall back to cloud APIs when local detection is uncertain. Default: true</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="humanization-config" class="docs-section">
+                        <h2>Humanization Settings</h2>
+                        <p>Configure how ApexCode transforms your code to appear more human-written.</p>
+
+                        <div class="code-block">
+                            <code>[humanization]
+auto_humanize = false         # Run humanization automatically on commit
+entropy_level = 0.5           # Transformation intensity (0.0 - 1.0)</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="config-options">
+                            <div class="config-option">
+                                <h4>auto_humanize</h4>
+                                <p>Automatically run humanization on every commit. Default: false</p>
+                            </div>
+                            <div class="config-option">
+                                <h4>entropy_level</h4>
+                                <p>Transformation intensity from 0.0 (minimal changes) to 1.0 (aggressive). Default: 0.5</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="jitter-config" class="docs-section">
+                        <h2>Jitter Settings</h2>
+                        <p>Configure temporal obfuscation to simulate organic development pace.</p>
+
+                        <div class="code-block">
+                            <code>[jitter]
+enabled = false               # Enable temporal obfuscation
+min_delay_secs = 60
+max_delay_secs = 300</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="config-options">
+                            <div class="config-option">
+                                <h4>enabled</h4>
+                                <p>Enable temporal obfuscation. Default: false</p>
+                            </div>
+                            <div class="config-option">
+                                <h4>min_delay_secs</h4>
+                                <p>Minimum delay in seconds between operations. Default: 60</p>
+                            </div>
+                            <div class="config-option">
+                                <h4>max_delay_secs</h4>
+                                <p>Maximum delay in seconds between operations. Default: 300</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="api-config" class="docs-section">
+                        <h2>API Settings</h2>
+                        <p>Configure cloud API keys for enhanced detection and humanization.</p>
+
+                        <div class="code-block">
+                            <code>[api]
+openrouter_key = ""           # Optional: OpenRouter API key
+anthropic_key = ""            # Optional: Anthropic API key
+base_url = ""                 # Optional: Custom API base URL</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="info-box">
+                            <strong>Security Note:</strong> API keys are stored locally in your project directory. Never commit your config file with real API keys to version control.
+                        </div>
+                    </section>
+
+                    <section id="cli-config" class="docs-section">
+                        <h2>Managing Configuration</h2>
+
+                        <div class="command-list">
+                            <div class="command-item">
+                                <h4>apexcode config --show</h4>
+                                <p>Display the current configuration.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>apexcode config --reset</h4>
+                                <p>Reset configuration to default values.</p>
+                            </div>
+                            <div class="command-item">
+                                <h4>apexcode config --edit</h4>
+                                <p>Open the configuration file in your default editor.</p>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>ApexCode. Built with <span class="heart">♥</span> by Mohamed Alieu Jagitay</p>
+                <p>MIT License</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+
+        const sections = document.querySelectorAll('.docs-section[id]');
+        const navLinks = document.querySelectorAll('.docs-sidebar a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "./test.rs": 1777400207.7082322,
+  "./crates/core/src/lib.rs": 1777449418.2639606,
+  "./crates/detector/src/lib.rs": 1777452088.9882329,
+  "./crates/humanizer/src/lib.rs": 1777444892.8069782,
+  "./crates/jitter/src/lib.rs": 1777452089.0562255,
+  "./crates/cli/src/main.rs": 1777460965.415145,
+  "./crates/tui/src/lib.rs": 1777452089.155215,
+  "./crates/undercover/src/lib.rs": 1777458941.7614138,
+  "./scripts/stealth_check.py": 1777456683.1493475,
+  "./scripts/auto_humanize.py": 1777456754.6523297,
+  "./scripts/check_commit_entropy.py": 1777456893.0851035,
+  "./scripts/naming_check.py": 1777457363.1717095,
+  "./CLAUDE.md": 1777401437.572488,
+  "./CODE_OF_CONDUCT.md": 1777445791.7638113,
+  "./SECURITY.md": 1777447194.5856981,
+  "./CHANGELOG.md": 1777447235.168563,
+  "./CONTRIBUTING.md": 1777453868.4636965,
+  "./SKILL.md": 1777461364.2587807,
+  "./README.md": 1777461662.7009947
+}

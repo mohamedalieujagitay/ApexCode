@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started - ApexCode</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem; color: inherit;">
+                    <svg width="32" height="32" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="256" height="256" rx="56" fill="#050505"/>
+                        <rect x="2" y="2" width="252" height="252" rx="54" stroke="#ffffff" stroke-opacity="0.1" stroke-width="2"/>
+                        <circle cx="128" cy="136" r="80" stroke="#ffffff" stroke-opacity="0.03" stroke-width="2"/>
+                        <path d="M128 64 L92 128 L164 128 Z" fill="#ffffff" fill-opacity="0.15"/>
+                        <path d="M128 64 L56 192 L200 192 Z" stroke="#ffffff" stroke-width="16" stroke-linejoin="round"/>
+                        <path d="M92 128 L164 128" stroke="#ffffff" stroke-width="16" stroke-cap="round"/>
+                    </svg>
+                    <span>ApexCode</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="getting-started.html" class="active">Docs</a>
+                <a href="https://github.com/mohamedalieujagitay/ApexCode" class="nav-github">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <div class="sidebar-section">
+                        <h3>Getting Started</h3>
+                        <ul>
+                            <li><a href="#installation" class="active">Installation</a></li>
+                            <li><a href="#quick-start">Quick Start</a></li>
+                            <li><a href="#basic-commands">Basic Commands</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li><a href="detection.html">AI Detection</a></li>
+                            <li><a href="humanization.html">Code Humanization</a></li>
+                            <li><a href="jitter.html">Temporal Obfuscation</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3>Advanced</h3>
+                        <ul>
+                            <li><a href="undercover.html">Undercover Mode</a></li>
+                            <li><a href="configuration.html">Configuration</a></li>
+                            <li><a href="api.html">API Reference</a></li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <article class="docs-content">
+                    <h1>Getting Started</h1>
+                    <p class="docs-intro">Get up and running with ApexCode in minutes.</p>
+
+                    <section id="installation" class="docs-section">
+                        <h2>Installation</h2>
+
+                        <h3>One-Click Installer (Recommended)</h3>
+                        <div class="code-block">
+                            <code>curl -sSL https://mohamedalieujagitay.github.io/ApexCode/install.sh | bash</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <h3>From crates.io</h3>
+                        <div class="code-block">
+                            <code>cargo install apexcode</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <h3>From Source</h3>
+                        <div class="code-block">
+                            <code>git clone https://github.com/mohamedalieujagitay/ApexCode.git
+cd apexcode
+cargo build --release
+cargo install --path crates/cli</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="info-box">
+                            <strong>Requirements:</strong> Rust 1.70 or later, Git 2.0 or later
+                        </div>
+                    </section>
+
+                    <section id="quick-start" class="docs-section">
+                        <h2>Quick Start</h2>
+
+                        <h3>Step 1: Go to your project</h3>
+                        <div class="code-block">
+                            <code>cd your-project</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <h3>Step 2: Stage your files</h3>
+                        <div class="code-block">
+                            <code>git add your-files</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <h3>Step 3: Check your code</h3>
+                        <div class="code-block">
+                            <code>apexcode</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <p>This will show your stealth score and suggest what to do next.</p>
+
+                        <h3>Step 4: Fix AI patterns</h3>
+                        <div class="code-block">
+                            <code>apexcode fix</code>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <p>That's it! Your code is now humanized.</p>
+                    </section>
+
+                    <section id="basic-commands" class="docs-section">
+                        <h2>Basic Commands</h2>
+
+                        <div class="command-list">
+                            <div class="command-item">
+                                <h4>apexcode</h4>
+                                <p>Check status and get suggestions. This is the default command - just run <code>apexcode</code> to see your stealth score.</p>
+                            </div>
+
+                            <div class="command-item">
+                                <h4>apexcode fix</h4>
+                                <p>Auto-fix AI patterns in staged files. This is the main command you'll use to humanize your code.</p>
+                            </div>
+
+                            <div class="command-item">
+                                <h4>apexcode scan</h4>
+                                <p>See what AI patterns are detected in your files without making changes.</p>
+                            </div>
+
+                            <div class="command-item">
+                                <h4>apexcode score</h4>
+                                <p>Check your stealth score with detailed breakdown of detected patterns.</p>
+                            </div>
+
+                            <div class="command-item">
+                                <h4>apexcode dashboard</h4>
+                                <p>Launch the visual TUI dashboard for real-time monitoring.</p>
+                            </div>
+
+                            <div class="command-item">
+                                <h4>apexcode config</h4>
+                                <p>View or change ApexCode settings.</p>
+                            </div>
+
+                            <div class="command-item">
+                                <h4>apexcode install</h4>
+                                <p>Install IDE integration for Claude Code, Cursor, Windsurf, or Antigravity.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="typical-workflow" class="docs-section">
+                        <h2>Typical Workflow</h2>
+
+                        <div class="workflow-steps">
+                            <div class="workflow-step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>Stage your files</h4>
+                                    <div class="code-block">
+                                        <code>git add your-files</code>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="workflow-step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>Check what's detected</h4>
+                                    <div class="code-block">
+                                        <code>apexcode scan</code>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="workflow-step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>Fix AI patterns</h4>
+                                    <div class="code-block">
+                                        <code>apexcode fix</code>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="workflow-step">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <h4>Commit</h4>
+                                    <div class="code-block">
+                                        <code>git commit -m "your message"</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="advanced-options" class="docs-section">
+                        <h2>Advanced Options</h2>
+
+                        <div class="command-list">
+                            <div class="command-item">
+                                <h4>Fix specific files</h4>
+                                <div class="code-block">
+                                    <code>apexcode fix --files src/main.rs</code>
+                                </div>
+                            </div>
+
+                            <div class="command-item">
+                                <h4>See what would change without applying</h4>
+                                <div class="code-block">
+                                    <code>apexcode fix --dry-run</code>
+                                </div>
+                            </div>
+
+                            <div class="command-item">
+                                <h4>Detailed score breakdown</h4>
+                                <div class="code-block">
+                                    <code>apexcode score --detailed</code>
+                                </div>
+                            </div>
+
+                            <div class="command-item">
+                                <h4>Reset settings to defaults</h4>
+                                <div class="code-block">
+                                    <code>apexcode config --reset</code>
+                                </div>
+                            </div>
+
+                            <div class="command-item">
+                                <h4>Install IDE integration</h4>
+                                <div class="code-block">
+                                    <code>apexcode install --ide claude
+apexcode install --ide all</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="docs-section">
+                        <h2>Next Steps</h2>
+                        <div class="next-steps">
+                            <a href="configuration.html" class="next-step-card">
+                                <h3>Configuration</h3>
+                                <p>Customize detection and humanization settings</p>
+                            </a>
+                            <a href="undercover.html" class="next-step-card">
+                                <h3>Undercover Mode</h3>
+                                <p>Learn advanced adversarial stylometry techniques</p>
+                            </a>
+                            <a href="api.html" class="next-step-card">
+                                <h3>API Reference</h3>
+                                <p>Complete API documentation</p>
+                            </a>
+                        </div>
+                    </section>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>ApexCode. Built with <span class="heart">♥</span> by Mohamed Alieu Jagitay</p>
+                <p>MIT License</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+
+        const sections = document.querySelectorAll('.docs-section[id]');
+        const navLinks = document.querySelectorAll('.docs-sidebar a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
