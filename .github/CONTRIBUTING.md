@@ -83,5 +83,3 @@ feat: add support for TypeScript detection
 ## Questions?
 
 Feel free to open an issue for questions or discussion.
-
-

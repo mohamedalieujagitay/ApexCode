@@ -30,7 +30,10 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    # nightly adds lints before they land in stable, so it can't block a merge
+    continue-on-error: ${{ matrix.rust == 'nightly' }}
     strategy:
+      fail-fast: false
       matrix:
         rust:
           - stable
@@ -80,6 +83,7 @@ jobs:
     name: Build
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest

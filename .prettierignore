@@ -11,3 +11,6 @@ docs/*.html
 .claude/rules/
 .cursor/rules/
 .windsurf/rules/
+
+# Local agent worktrees
+.kilo/
