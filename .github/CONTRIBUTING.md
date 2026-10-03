@@ -84,7 +84,4 @@ feat: add support for TypeScript detection
 
 Feel free to open an issue for questions or discussion.
 
----
 
-Built with ❤️ by Mohamed Alieu Jagitay GitHub: https://github.com/John-Varghese-EH LinkedIn:
-https://linkedin.com/in/John--Varghese
