@@ -16,4 +16,8 @@ ignore = [
     "RUSTSEC-2025-0134",
     # lru 0.12.x - unsound IterMut (transitive via ratatui)
     "RUSTSEC-2026-0002",
+    # ring 0.17.9 - AES panic only with overflow checks on, which release builds turn off.
+    # The fix (>=0.17.12) needs a newer cc than the tree-sitter 0.20 grammars allow;
+    # drop this once those grammars are upgraded
+    "RUSTSEC-2025-0009",
 ]
