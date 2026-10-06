@@ -6,25 +6,25 @@
 //! Built with ❤️ by Mohamed Alieu Jagitay
 
 use anyhow::Result;
-use ratatui::{
-    backend::CrosstermBackend,
-    layout::{Alignment, Constraint, Direction, Layout, Rect},
-    style::{Color, Modifier, Style},
-    text::{Span, Line},
-    widgets::{Block, Borders, Gauge, Paragraph, Wrap, BarChart, List, ListItem, Tabs},
-    Frame, Terminal,
-};
 use crossterm::{
     event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEvent},
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
-use std::io;
-use std::time::Duration;
-use std::path::PathBuf;
+use ratatui::{
+    backend::CrosstermBackend,
+    layout::{Alignment, Constraint, Direction, Layout, Rect},
+    style::{Color, Modifier, Style},
+    text::{Line, Span},
+    widgets::{BarChart, Block, Borders, Gauge, List, ListItem, ListState, Paragraph, Tabs, Wrap},
+    Frame, Terminal,
+};
 use std::collections::HashMap;
+use std::io;
+use std::path::PathBuf;
+use std::time::Duration;
 
-use apexcode_core::{Config, StealthScore, Pattern, PatternType, Language};
+use apexcode_core::{Config, Language, Pattern, PatternType, StealthScore};
 
 /// Main TUI application
 pub struct ApexTui {
@@ -223,7 +223,15 @@ impl Tab {
     }
 
     fn all() -> Vec<Tab> {
-        vec![Tab::Dashboard, Tab::Scan, Tab::Humanize, Tab::Score, Tab::Files, Tab::Settings, Tab::Help]
+        vec![
+            Tab::Dashboard,
+            Tab::Scan,
+            Tab::Humanize,
+            Tab::Score,
+            Tab::Files,
+            Tab::Settings,
+            Tab::Help,
+        ]
     }
 }
 
@@ -238,6 +246,12 @@ impl Default for AppState {
             is_scanning: false,
             git_status: None,
         }
+    }
+}
+
+impl Default for ApexTui {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
@@ -329,14 +343,13 @@ impl ApexTui {
                 })
                 .map(|e| {
                     let path = e.path();
-                    let language = path.extension()
+                    let language = path
+                        .extension()
                         .and_then(|ext| ext.to_str())
-                        .map(|ext| Language::from_extension(ext))
+                        .map(Language::from_extension)
                         .unwrap_or(Language::Unknown);
 
-                    let size = path.metadata()
-                        .map(|m| m.len())
-                        .unwrap_or(0);
+                    let size = path.metadata().map(|m| m.len()).unwrap_or(0);
 
                     FileItem {
                         path: path.clone(),
@@ -368,7 +381,10 @@ impl ApexTui {
                     self.adjust_setting(-1);
                 } else {
                     let tabs = Tab::all();
-                    let current = tabs.iter().position(|&t| t == self.current_tab).unwrap_or(0);
+                    let current = tabs
+                        .iter()
+                        .position(|&t| t == self.current_tab)
+                        .unwrap_or(0);
                     if current > 0 {
                         self.current_tab = tabs[current - 1];
                         self.scroll = 0;
@@ -382,7 +398,10 @@ impl ApexTui {
                     self.adjust_setting(1);
                 } else {
                     let tabs = Tab::all();
-                    let current = tabs.iter().position(|&t| t == self.current_tab).unwrap_or(0);
+                    let current = tabs
+                        .iter()
+                        .position(|&t| t == self.current_tab)
+                        .unwrap_or(0);
                     if current < tabs.len() - 1 {
                         self.current_tab = tabs[current + 1];
                         self.scroll = 0;
@@ -415,7 +434,10 @@ impl ApexTui {
                 // Toggle selection
                 if let Some(file) = self.state.files.get_mut(self.selected) {
                     file.selected = !file.selected;
-                    self.state.status = format!("{} selected files", self.state.files.iter().filter(|f| f.selected).count());
+                    self.state.status = format!(
+                        "{} selected files",
+                        self.state.files.iter().filter(|f| f.selected).count()
+                    );
                 }
             }
             KeyCode::Enter => {
@@ -540,19 +562,23 @@ impl ApexTui {
                 self.state.stealth_score = None;
                 self.state.status = "Scan results cleared".to_string();
             }
-            KeyCode::Char('i') => {
+            KeyCode::Char('i')
                 // Show info about selected file
-                if self.current_tab == Tab::Files {
+                if self.current_tab == Tab::Files => {
                     if let Some(file) = self.state.files.get(self.selected) {
                         let size_str = if file.size > 0 {
                             format!("{} bytes", file.size)
                         } else {
                             "Unknown size".to_string()
                         };
-                        self.state.status = format!("{} - {} - {}", file.path.display(), file.language as i32, size_str);
+                        self.state.status = format!(
+                            "{} - {} - {}",
+                            file.path.display(),
+                            file.language as i32,
+                            size_str
+                        );
                     }
                 }
-            }
             _ => {}
         }
     }
@@ -564,39 +590,63 @@ impl ApexTui {
             match setting {
                 SettingItem::UseLocalModels => {
                     self.state.config.detection.use_local = !self.state.config.detection.use_local;
-                    self.state.status = format!("Use Local Models: {}", self.state.config.detection.use_local);
+                    self.state.status = format!(
+                        "Use Local Models: {}",
+                        self.state.config.detection.use_local
+                    );
                 }
                 SettingItem::UseCloudFallback => {
-                    self.state.config.detection.use_cloud_fallback = !self.state.config.detection.use_cloud_fallback;
-                    self.state.status = format!("Cloud Fallback: {}", self.state.config.detection.use_cloud_fallback);
+                    self.state.config.detection.use_cloud_fallback =
+                        !self.state.config.detection.use_cloud_fallback;
+                    self.state.status = format!(
+                        "Cloud Fallback: {}",
+                        self.state.config.detection.use_cloud_fallback
+                    );
                 }
                 SettingItem::DetectionThreshold => {
                     let step = 0.05 * direction as f32;
-                    self.state.config.detection.threshold = (self.state.config.detection.threshold + step).clamp(0.0, 1.0);
-                    self.state.status = format!("Detection Threshold: {:.2}", self.state.config.detection.threshold);
+                    self.state.config.detection.threshold =
+                        (self.state.config.detection.threshold + step).clamp(0.0, 1.0);
+                    self.state.status = format!(
+                        "Detection Threshold: {:.2}",
+                        self.state.config.detection.threshold
+                    );
                 }
                 SettingItem::AutoHumanize => {
-                    self.state.config.humanization.auto_humanize = !self.state.config.humanization.auto_humanize;
-                    self.state.status = format!("Auto Humanize: {}", self.state.config.humanization.auto_humanize);
+                    self.state.config.humanization.auto_humanize =
+                        !self.state.config.humanization.auto_humanize;
+                    self.state.status = format!(
+                        "Auto Humanize: {}",
+                        self.state.config.humanization.auto_humanize
+                    );
                 }
                 SettingItem::EntropyLevel => {
                     let step = 0.1 * direction as f32;
-                    self.state.config.humanization.entropy_level = (self.state.config.humanization.entropy_level + step).clamp(0.0, 1.0);
-                    self.state.status = format!("Entropy Level: {:.2}", self.state.config.humanization.entropy_level);
+                    self.state.config.humanization.entropy_level =
+                        (self.state.config.humanization.entropy_level + step).clamp(0.0, 1.0);
+                    self.state.status = format!(
+                        "Entropy Level: {:.2}",
+                        self.state.config.humanization.entropy_level
+                    );
                 }
                 SettingItem::JitterEnabled => {
                     self.state.config.jitter.enabled = !self.state.config.jitter.enabled;
-                    self.state.status = format!("Jitter Enabled: {}", self.state.config.jitter.enabled);
+                    self.state.status =
+                        format!("Jitter Enabled: {}", self.state.config.jitter.enabled);
                 }
                 SettingItem::MinDelay => {
                     let step = 10 * direction as i64;
-                    self.state.config.jitter.min_delay_secs = (self.state.config.jitter.min_delay_secs as i64 + step).max(0) as u64;
-                    self.state.status = format!("Min Delay: {}s", self.state.config.jitter.min_delay_secs);
+                    self.state.config.jitter.min_delay_secs =
+                        (self.state.config.jitter.min_delay_secs as i64 + step).max(0) as u64;
+                    self.state.status =
+                        format!("Min Delay: {}s", self.state.config.jitter.min_delay_secs);
                 }
                 SettingItem::MaxDelay => {
                     let step = 10 * direction as i64;
-                    self.state.config.jitter.max_delay_secs = (self.state.config.jitter.max_delay_secs as i64 + step).max(0) as u64;
-                    self.state.status = format!("Max Delay: {}s", self.state.config.jitter.max_delay_secs);
+                    self.state.config.jitter.max_delay_secs =
+                        (self.state.config.jitter.max_delay_secs as i64 + step).max(0) as u64;
+                    self.state.status =
+                        format!("Max Delay: {}s", self.state.config.jitter.max_delay_secs);
                 }
             }
         }
@@ -631,7 +681,10 @@ impl ApexTui {
         self.state.is_scanning = true;
         self.state.status = "Scanning...".to_string();
 
-        let selected_files: Vec<_> = self.state.files.iter()
+        let selected_files: Vec<_> = self
+            .state
+            .files
+            .iter()
             .filter(|f| f.selected)
             .cloned()
             .collect();
@@ -696,9 +749,13 @@ impl ApexTui {
 
         // Calculate overall score
         if !self.state.scan_results.is_empty() {
-            let avg_ai_prob: f32 = self.state.scan_results.iter()
+            let avg_ai_prob: f32 = self
+                .state
+                .scan_results
+                .iter()
                 .map(|r| r.ai_probability)
-                .sum::<f32>() / self.state.scan_results.len() as f32;
+                .sum::<f32>()
+                / self.state.scan_results.len() as f32;
 
             self.state.stealth_score = Some(StealthScore::new(avg_ai_prob, 0.2, 0.3));
         }
@@ -706,7 +763,10 @@ impl ApexTui {
         self.state.is_scanning = false;
         let total = self.state.scan_results.len();
         let errors = error_count;
-        self.state.status = format!("Scan complete: {} files processed, {} errors", total, errors);
+        self.state.status = format!(
+            "Scan complete: {} files processed, {} errors",
+            total, errors
+        );
     }
 
     /// Get max items for current view
@@ -727,10 +787,10 @@ impl ApexTui {
             .direction(Direction::Vertical)
             .margin(1)
             .constraints([
-                Constraint::Length(3),  // Header
-                Constraint::Min(0),     // Content
-                Constraint::Length(2),  // Status bar
-                Constraint::Length(1),  // Footer
+                Constraint::Length(3), // Header
+                Constraint::Min(0),    // Content
+                Constraint::Length(2), // Status bar
+                Constraint::Length(1), // Footer
             ])
             .split(size);
 
@@ -762,7 +822,9 @@ impl ApexTui {
             .iter()
             .map(|t| {
                 let style = if *t == self.current_tab {
-                    Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD)
+                    Style::default()
+                        .fg(Color::Cyan)
+                        .add_modifier(Modifier::BOLD)
                 } else {
                     Style::default().fg(Color::Gray)
                 };
@@ -775,12 +837,24 @@ impl ApexTui {
                 Block::default()
                     .borders(Borders::ALL)
                     .title("ApexCode Dashboard")
-                    .title_style(Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD))
+                    .title_style(
+                        Style::default()
+                            .fg(Color::Cyan)
+                            .add_modifier(Modifier::BOLD),
+                    ),
             )
             .style(Style::default().fg(Color::White))
-            .highlight_style(Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD))
+            .highlight_style(
+                Style::default()
+                    .fg(Color::Cyan)
+                    .add_modifier(Modifier::BOLD),
+            )
             .divider(Span::raw(" | "))
-            .select(tabs.iter().position(|&t| t == self.current_tab).unwrap_or(0));
+            .select(
+                tabs.iter()
+                    .position(|&t| t == self.current_tab)
+                    .unwrap_or(0),
+            );
 
         f.render_widget(tabs_widget, area);
     }
@@ -813,10 +887,7 @@ impl ApexTui {
     fn draw_dashboard(&self, f: &mut Frame, area: Rect) {
         let chunks = Layout::default()
             .direction(Direction::Vertical)
-            .constraints([
-                Constraint::Length(8),
-                Constraint::Min(0),
-            ])
+            .constraints([Constraint::Length(8), Constraint::Min(0)])
             .split(area);
 
         // Draw stealth score gauge
@@ -825,10 +896,7 @@ impl ApexTui {
         // Draw quick actions and stats
         let stats_chunks = Layout::default()
             .direction(Direction::Horizontal)
-            .constraints([
-                Constraint::Percentage(50),
-                Constraint::Percentage(50),
-            ])
+            .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
             .split(chunks[1]);
 
         // Draw stats
@@ -840,7 +908,10 @@ impl ApexTui {
 
     /// Draw stealth score gauge
     fn draw_stealth_score(&self, f: &mut Frame, area: Rect) {
-        let score = self.state.stealth_score.as_ref()
+        let score = self
+            .state
+            .stealth_score
+            .as_ref()
             .map(|s| s.overall)
             .unwrap_or(0.75);
 
@@ -853,15 +924,17 @@ impl ApexTui {
         };
 
         let gauge = Gauge::default()
-            .block(Block::default().borders(Borders::ALL).title("Stealth Score"))
-            .gauge_style(
-                Style::default()
-                    .fg(gauge_color)
-                    .bg(Color::DarkGray)
+            .block(
+                Block::default()
+                    .borders(Borders::ALL)
+                    .title("Stealth Score"),
             )
+            .gauge_style(Style::default().fg(gauge_color).bg(Color::DarkGray))
             .label(Span::styled(
                 format!("{:.0}%", score * 100.0),
-                Style::default().fg(Color::White).add_modifier(Modifier::BOLD),
+                Style::default()
+                    .fg(Color::White)
+                    .add_modifier(Modifier::BOLD),
             ))
             .ratio(score as f64);
 
@@ -872,10 +945,30 @@ impl ApexTui {
     fn draw_stats(&self, f: &mut Frame, area: Rect) {
         let selected_count = self.state.files.iter().filter(|f| f.selected).count();
         let scanned_count = self.state.scan_results.len();
-        let high_risk_count = self.state.scan_results.iter().filter(|r| r.ai_probability > 0.7).count();
-        let medium_risk_count = self.state.scan_results.iter().filter(|r| r.ai_probability > 0.4 && r.ai_probability <= 0.7).count();
-        let low_risk_count = self.state.scan_results.iter().filter(|r| r.ai_probability <= 0.4).count();
-        let error_count = self.state.scan_results.iter().filter(|r| r.status == ScanStatus::Error).count();
+        let high_risk_count = self
+            .state
+            .scan_results
+            .iter()
+            .filter(|r| r.ai_probability > 0.7)
+            .count();
+        let medium_risk_count = self
+            .state
+            .scan_results
+            .iter()
+            .filter(|r| r.ai_probability > 0.4 && r.ai_probability <= 0.7)
+            .count();
+        let low_risk_count = self
+            .state
+            .scan_results
+            .iter()
+            .filter(|r| r.ai_probability <= 0.4)
+            .count();
+        let error_count = self
+            .state
+            .scan_results
+            .iter()
+            .filter(|r| r.status == ScanStatus::Error)
+            .count();
 
         let stats = vec![
             Line::from("Repository Stats:"),
@@ -884,21 +977,27 @@ impl ApexTui {
                 Span::raw("  Files: "),
                 Span::styled(
                     format!("{}", self.state.files.len()),
-                    Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD)
+                    Style::default()
+                        .fg(Color::Cyan)
+                        .add_modifier(Modifier::BOLD),
                 ),
             ]),
             Line::from(vec![
                 Span::raw("  Selected: "),
                 Span::styled(
                     format!("{}", selected_count),
-                    Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD)
+                    Style::default()
+                        .fg(Color::Cyan)
+                        .add_modifier(Modifier::BOLD),
                 ),
             ]),
             Line::from(vec![
                 Span::raw("  Scanned: "),
                 Span::styled(
                     format!("{}", scanned_count),
-                    Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD)
+                    Style::default()
+                        .fg(Color::Cyan)
+                        .add_modifier(Modifier::BOLD),
                 ),
             ]),
             Line::from(""),
@@ -907,36 +1006,46 @@ impl ApexTui {
                 Span::raw("  High Risk: "),
                 Span::styled(
                     format!("{}", high_risk_count),
-                    Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)
+                    Style::default().fg(Color::Red).add_modifier(Modifier::BOLD),
                 ),
             ]),
             Line::from(vec![
                 Span::raw("  Medium Risk: "),
                 Span::styled(
                     format!("{}", medium_risk_count),
-                    Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)
+                    Style::default()
+                        .fg(Color::Yellow)
+                        .add_modifier(Modifier::BOLD),
                 ),
             ]),
             Line::from(vec![
                 Span::raw("  Low Risk: "),
                 Span::styled(
                     format!("{}", low_risk_count),
-                    Style::default().fg(Color::Green).add_modifier(Modifier::BOLD)
+                    Style::default()
+                        .fg(Color::Green)
+                        .add_modifier(Modifier::BOLD),
                 ),
             ]),
             Line::from(vec![
                 Span::raw("  Errors: "),
                 Span::styled(
                     format!("{}", error_count),
-                    Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)
+                    Style::default().fg(Color::Red).add_modifier(Modifier::BOLD),
                 ),
             ]),
             Line::from(""),
             Line::from(vec![
                 Span::raw("  Branch: "),
                 Span::styled(
-                    self.state.git_status.as_ref().map(|g| g.branch.as_str()).unwrap_or("N/A"),
-                    Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD)
+                    self.state
+                        .git_status
+                        .as_ref()
+                        .map(|g| g.branch.as_str())
+                        .unwrap_or("N/A"),
+                    Style::default()
+                        .fg(Color::Cyan)
+                        .add_modifier(Modifier::BOLD),
                 ),
             ]),
         ];
@@ -985,13 +1094,17 @@ impl ApexTui {
                 Span::raw("  Selected: "),
                 Span::styled(
                     format!("{}", selected_count),
-                    Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD)
+                    Style::default()
+                        .fg(Color::Cyan)
+                        .add_modifier(Modifier::BOLD),
                 ),
                 Span::raw(" files | "),
                 Span::raw("Scanned: "),
                 Span::styled(
                     format!("{}", scanned_count),
-                    Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD)
+                    Style::default()
+                        .fg(Color::Cyan)
+                        .add_modifier(Modifier::BOLD),
                 ),
             ]),
         ];
@@ -1007,10 +1120,7 @@ impl ApexTui {
     fn draw_scan(&self, f: &mut Frame, area: Rect) {
         let chunks = Layout::default()
             .direction(Direction::Vertical)
-            .constraints([
-                Constraint::Length(8),
-                Constraint::Min(0),
-            ])
+            .constraints([Constraint::Length(8), Constraint::Min(0)])
             .split(area);
 
         // Draw pattern breakdown
@@ -1054,10 +1164,7 @@ impl ApexTui {
             }
         }
 
-        let patterns: Vec<(&str, f32)> = pattern_scores
-            .iter()
-            .map(|(k, v)| (*k, *v))
-            .collect();
+        let patterns: Vec<(&str, f32)> = pattern_scores.iter().map(|(k, v)| (*k, *v)).collect();
 
         let bars: Vec<(&str, u64)> = patterns
             .iter()
@@ -1065,12 +1172,20 @@ impl ApexTui {
             .collect();
 
         let barchart = BarChart::default()
-            .block(Block::default().borders(Borders::ALL).title("Pattern Detection"))
+            .block(
+                Block::default()
+                    .borders(Borders::ALL)
+                    .title("Pattern Detection"),
+            )
             .bar_width(8)
             .bar_gap(2)
             .data(&bars)
             .style(Style::default().fg(Color::Cyan))
-            .value_style(Style::default().fg(Color::White).add_modifier(Modifier::BOLD));
+            .value_style(
+                Style::default()
+                    .fg(Color::White)
+                    .add_modifier(Modifier::BOLD),
+            );
 
         f.render_widget(barchart, area);
     }
@@ -1095,7 +1210,9 @@ impl ApexTui {
             return;
         }
 
-        let items: Vec<ListItem> = self.state.scan_results
+        let items: Vec<ListItem> = self
+            .state
+            .scan_results
             .iter()
             .enumerate()
             .map(|(i, result)| {
@@ -1117,7 +1234,9 @@ impl ApexTui {
                 let patterns_str = if result.patterns.is_empty() {
                     "None".to_string()
                 } else {
-                    result.patterns.iter()
+                    result
+                        .patterns
+                        .iter()
                         .map(|p| match &p.pattern_type {
                             PatternType::Watermark => "Watermark",
                             PatternType::ExcessiveEmojis => "Emojis",
@@ -1142,18 +1261,25 @@ impl ApexTui {
                     Line::from(vec![
                         Span::raw(format!("{} ", i + 1)),
                         Span::styled(
-                            result.path.file_name().and_then(|n| n.to_str()).unwrap_or("?"),
-                            Style::default().fg(color)
+                            result
+                                .path
+                                .file_name()
+                                .and_then(|n| n.to_str())
+                                .unwrap_or("?"),
+                            Style::default().fg(color),
                         ),
                         Span::raw(" - "),
                         Span::styled(
                             format!("{:.0}% AI", result.ai_probability * 100.0),
-                            Style::default().fg(color).add_modifier(Modifier::BOLD)
+                            Style::default().fg(color).add_modifier(Modifier::BOLD),
                         ),
                         Span::raw(" ["),
                         Span::styled(status, Style::default().fg(Color::Gray)),
                         Span::raw("] ["),
-                        Span::styled(risk_level, Style::default().fg(color).add_modifier(Modifier::BOLD)),
+                        Span::styled(
+                            risk_level,
+                            Style::default().fg(color).add_modifier(Modifier::BOLD),
+                        ),
                         Span::raw("]"),
                     ]),
                     Line::from(vec![
@@ -1167,26 +1293,25 @@ impl ApexTui {
         let list = List::new(items)
             .block(Block::default().borders(Borders::ALL).title("Scan Results"))
             .style(Style::default().fg(Color::White))
-            .scroll(self.scroll as u16)
-            .highlight_style(Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD));
+            .highlight_style(
+                Style::default()
+                    .fg(Color::Cyan)
+                    .add_modifier(Modifier::BOLD),
+            );
 
-        f.render_stateful_widget(
-            list,
-            area,
-            |state| {
-                state.select(Some(self.selected));
-            }
-        );
+        // List has no scroll setter; the offset lives in ListState with the selection
+        let mut state = ListState::default()
+            .with_offset(self.scroll)
+            .with_selected(Some(self.selected));
+
+        f.render_stateful_widget(list, area, &mut state);
     }
 
     /// Draw humanize tab
     fn draw_humanize(&self, f: &mut Frame, area: Rect) {
         let chunks = Layout::default()
             .direction(Direction::Vertical)
-            .constraints([
-                Constraint::Length(12),
-                Constraint::Min(0),
-            ])
+            .constraints([Constraint::Length(12), Constraint::Min(0)])
             .split(area);
 
         // Draw humanization options
@@ -1218,7 +1343,11 @@ impl ApexTui {
         ];
 
         let paragraph = Paragraph::new(style_info)
-            .block(Block::default().borders(Borders::ALL).title("Humanize Code"))
+            .block(
+                Block::default()
+                    .borders(Borders::ALL)
+                    .title("Humanize Code"),
+            )
             .wrap(Wrap { trim: true });
 
         f.render_widget(paragraph, chunks[0]);
@@ -1230,15 +1359,26 @@ impl ApexTui {
             Line::from(vec![
                 Span::raw("  Entropy Level: "),
                 Span::styled(
-                    format!("{:.0}%", self.state.config.humanization.entropy_level * 100.0),
-                    Style::default().fg(Color::Cyan)
+                    format!(
+                        "{:.0}%",
+                        self.state.config.humanization.entropy_level * 100.0
+                    ),
+                    Style::default().fg(Color::Cyan),
                 ),
             ]),
             Line::from(vec![
                 Span::raw("  Auto Humanize: "),
                 Span::styled(
-                    if self.state.config.humanization.auto_humanize { "Enabled" } else { "Disabled" },
-                    Style::default().fg(if self.state.config.humanization.auto_humanize { Color::Green } else { Color::Red })
+                    if self.state.config.humanization.auto_humanize {
+                        "Enabled"
+                    } else {
+                        "Disabled"
+                    },
+                    Style::default().fg(if self.state.config.humanization.auto_humanize {
+                        Color::Green
+                    } else {
+                        Color::Red
+                    }),
                 ),
             ]),
             Line::from(""),
@@ -1246,15 +1386,27 @@ impl ApexTui {
             Line::from(vec![
                 Span::raw("  Jitter Enabled: "),
                 Span::styled(
-                    if self.state.config.jitter.enabled { "Yes" } else { "No" },
-                    Style::default().fg(if self.state.config.jitter.enabled { Color::Green } else { Color::Red })
+                    if self.state.config.jitter.enabled {
+                        "Yes"
+                    } else {
+                        "No"
+                    },
+                    Style::default().fg(if self.state.config.jitter.enabled {
+                        Color::Green
+                    } else {
+                        Color::Red
+                    }),
                 ),
             ]),
             Line::from(vec![
                 Span::raw("  Delay Range: "),
                 Span::styled(
-                    format!("{}s - {}s", self.state.config.jitter.min_delay_secs, self.state.config.jitter.max_delay_secs),
-                    Style::default().fg(Color::Cyan)
+                    format!(
+                        "{}s - {}s",
+                        self.state.config.jitter.min_delay_secs,
+                        self.state.config.jitter.max_delay_secs
+                    ),
+                    Style::default().fg(Color::Cyan),
                 ),
             ]),
             Line::from(""),
@@ -1263,27 +1415,47 @@ impl ApexTui {
                 Span::raw("  Threshold: "),
                 Span::styled(
                     format!("{:.2}", self.state.config.detection.threshold),
-                    Style::default().fg(Color::Cyan)
+                    Style::default().fg(Color::Cyan),
                 ),
             ]),
             Line::from(vec![
                 Span::raw("  Use Local Models: "),
                 Span::styled(
-                    if self.state.config.detection.use_local { "Yes" } else { "No" },
-                    Style::default().fg(if self.state.config.detection.use_local { Color::Green } else { Color::Red })
+                    if self.state.config.detection.use_local {
+                        "Yes"
+                    } else {
+                        "No"
+                    },
+                    Style::default().fg(if self.state.config.detection.use_local {
+                        Color::Green
+                    } else {
+                        Color::Red
+                    }),
                 ),
             ]),
             Line::from(vec![
                 Span::raw("  Cloud Fallback: "),
                 Span::styled(
-                    if self.state.config.detection.use_cloud_fallback { "Yes" } else { "No" },
-                    Style::default().fg(if self.state.config.detection.use_cloud_fallback { Color::Green } else { Color::Red })
+                    if self.state.config.detection.use_cloud_fallback {
+                        "Yes"
+                    } else {
+                        "No"
+                    },
+                    Style::default().fg(if self.state.config.detection.use_cloud_fallback {
+                        Color::Green
+                    } else {
+                        Color::Red
+                    }),
                 ),
             ]),
         ];
 
         let paragraph = Paragraph::new(settings)
-            .block(Block::default().borders(Borders::ALL).title("Configuration"))
+            .block(
+                Block::default()
+                    .borders(Borders::ALL)
+                    .title("Configuration"),
+            )
             .wrap(Wrap { trim: true });
 
         f.render_widget(paragraph, chunks[1]);
@@ -1293,10 +1465,7 @@ impl ApexTui {
     fn draw_score(&self, f: &mut Frame, area: Rect) {
         let chunks = Layout::default()
             .direction(Direction::Vertical)
-            .constraints([
-                Constraint::Length(12),
-                Constraint::Min(0),
-            ])
+            .constraints([Constraint::Length(12), Constraint::Min(0)])
             .split(area);
 
         // Draw detailed score
@@ -1308,28 +1477,36 @@ impl ApexTui {
                     Span::raw("  Overall: "),
                     Span::styled(
                         format!("{:.0}%", score.overall * 100.0),
-                        Style::default().fg(if score.overall > 0.7 { Color::Green } else if score.overall > 0.4 { Color::Yellow } else { Color::Red }).add_modifier(Modifier::BOLD)
+                        Style::default()
+                            .fg(if score.overall > 0.7 {
+                                Color::Green
+                            } else if score.overall > 0.4 {
+                                Color::Yellow
+                            } else {
+                                Color::Red
+                            })
+                            .add_modifier(Modifier::BOLD),
                     ),
                 ]),
                 Line::from(vec![
                     Span::raw("  AI Probability: "),
                     Span::styled(
                         format!("{:.0}%", score.ai_probability * 100.0),
-                        Style::default().fg(Color::Yellow)
+                        Style::default().fg(Color::Yellow),
                     ),
                 ]),
                 Line::from(vec![
                     Span::raw("  Pattern Score: "),
                     Span::styled(
                         format!("{:.0}%", score.pattern_score * 100.0),
-                        Style::default().fg(Color::Cyan)
+                        Style::default().fg(Color::Cyan),
                     ),
                 ]),
                 Line::from(vec![
                     Span::raw("  Style Score: "),
                     Span::styled(
                         format!("{:.0}%", score.style_score * 100.0),
-                        Style::default().fg(Color::Cyan)
+                        Style::default().fg(Color::Cyan),
                     ),
                 ]),
                 Line::from(""),
@@ -1344,13 +1521,23 @@ impl ApexTui {
                         } else {
                             "✗ Your code appears AI-generated"
                         },
-                        Style::default().fg(if score.overall > 0.7 { Color::Green } else if score.overall > 0.4 { Color::Yellow } else { Color::Red })
+                        Style::default().fg(if score.overall > 0.7 {
+                            Color::Green
+                        } else if score.overall > 0.4 {
+                            Color::Yellow
+                        } else {
+                            Color::Red
+                        }),
                     ),
                 ]),
             ];
 
             let paragraph = Paragraph::new(score_details)
-                .block(Block::default().borders(Borders::ALL).title("Current Score"))
+                .block(
+                    Block::default()
+                        .borders(Borders::ALL)
+                        .title("Current Score"),
+                )
                 .wrap(Wrap { trim: true });
 
             f.render_widget(paragraph, chunks[0]);
@@ -1362,7 +1549,11 @@ impl ApexTui {
             ];
 
             let paragraph = Paragraph::new(text)
-                .block(Block::default().borders(Borders::ALL).title("Current Score"))
+                .block(
+                    Block::default()
+                        .borders(Borders::ALL)
+                        .title("Current Score"),
+                )
                 .wrap(Wrap { trim: true });
 
             f.render_widget(paragraph, chunks[0]);
@@ -1416,29 +1607,59 @@ impl ApexTui {
             .map(|(i, item)| {
                 let is_selected = i == self.selected;
                 let style = if is_selected {
-                    Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD)
+                    Style::default()
+                        .fg(Color::Cyan)
+                        .add_modifier(Modifier::BOLD)
                 } else {
                     Style::default().fg(Color::White)
                 };
 
                 let value = match item {
                     SettingItem::UseLocalModels => {
-                        format!("[{}]", if self.state.config.detection.use_local { "x" } else { " " })
+                        format!(
+                            "[{}]",
+                            if self.state.config.detection.use_local {
+                                "x"
+                            } else {
+                                " "
+                            }
+                        )
                     }
                     SettingItem::UseCloudFallback => {
-                        format!("[{}]", if self.state.config.detection.use_cloud_fallback { "x" } else { " " })
+                        format!(
+                            "[{}]",
+                            if self.state.config.detection.use_cloud_fallback {
+                                "x"
+                            } else {
+                                " "
+                            }
+                        )
                     }
                     SettingItem::DetectionThreshold => {
                         format!("{:.2}", self.state.config.detection.threshold)
                     }
                     SettingItem::AutoHumanize => {
-                        format!("[{}]", if self.state.config.humanization.auto_humanize { "x" } else { " " })
+                        format!(
+                            "[{}]",
+                            if self.state.config.humanization.auto_humanize {
+                                "x"
+                            } else {
+                                " "
+                            }
+                        )
                     }
                     SettingItem::EntropyLevel => {
                         format!("{:.2}", self.state.config.humanization.entropy_level)
                     }
                     SettingItem::JitterEnabled => {
-                        format!("[{}]", if self.state.config.jitter.enabled { "x" } else { " " })
+                        format!(
+                            "[{}]",
+                            if self.state.config.jitter.enabled {
+                                "x"
+                            } else {
+                                " "
+                            }
+                        )
                     }
                     SettingItem::MinDelay => {
                         format!("{}s", self.state.config.jitter.min_delay_secs)
@@ -1465,10 +1686,14 @@ impl ApexTui {
                         "Settings (Edit Mode - Use Left/Right to adjust, 'e' to exit)"
                     } else {
                         "Settings (Press Enter to edit)"
-                    })
+                    }),
             )
             .style(Style::default().fg(Color::White))
-            .highlight_style(Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD));
+            .highlight_style(
+                Style::default()
+                    .fg(Color::Cyan)
+                    .add_modifier(Modifier::BOLD),
+            );
 
         f.render_widget(list, area);
     }
@@ -1477,10 +1702,7 @@ impl ApexTui {
     fn draw_help(&self, f: &mut Frame, area: Rect) {
         let chunks = Layout::default()
             .direction(Direction::Horizontal)
-            .constraints([
-                Constraint::Percentage(50),
-                Constraint::Percentage(50),
-            ])
+            .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
             .split(area);
 
         // Draw keyboard shortcuts
@@ -1563,27 +1785,26 @@ impl ApexTui {
     fn draw_files(&self, f: &mut Frame, area: Rect) {
         let chunks = Layout::default()
             .direction(Direction::Vertical)
-            .constraints([
-                Constraint::Length(3),
-                Constraint::Min(0),
-            ])
+            .constraints([Constraint::Length(3), Constraint::Min(0)])
             .split(area);
 
         // Draw current directory and filter
-        let dir_text = vec![
-            Line::from(vec![
-                Span::raw("Current: "),
-                Span::styled(
-                    self.current_dir.display().to_string(),
-                    Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD)
-                ),
-                Span::raw(" | Filter: "),
-                Span::styled(
-                    self.file_filter.title(),
-                    Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)
-                ),
-            ]),
-        ];
+        let dir_text = vec![Line::from(vec![
+            Span::raw("Current: "),
+            Span::styled(
+                self.current_dir.display().to_string(),
+                Style::default()
+                    .fg(Color::Cyan)
+                    .add_modifier(Modifier::BOLD),
+            ),
+            Span::raw(" | Filter: "),
+            Span::styled(
+                self.file_filter.title(),
+                Style::default()
+                    .fg(Color::Yellow)
+                    .add_modifier(Modifier::BOLD),
+            ),
+        ])];
 
         let paragraph = Paragraph::new(dir_text)
             .block(Block::default().borders(Borders::ALL).title("Directory"))
@@ -1619,22 +1840,22 @@ impl ApexTui {
             return;
         }
 
-        let items: Vec<ListItem> = self.state.files
+        let items: Vec<ListItem> = self
+            .state
+            .files
             .iter()
             .enumerate()
             .map(|(i, file)| {
                 let is_selected = i == self.selected;
                 let style = if is_selected {
-                    Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD)
+                    Style::default()
+                        .fg(Color::Cyan)
+                        .add_modifier(Modifier::BOLD)
                 } else {
                     Style::default().fg(Color::White)
                 };
 
-                let checkbox = if file.selected {
-                    "[x]"
-                } else {
-                    "[ ]"
-                };
+                let checkbox = if file.selected { "[x]" } else { "[ ]" };
 
                 let lang_str = match file.language {
                     Language::Rust => "Rust",
@@ -1667,23 +1888,20 @@ impl ApexTui {
                 ListItem::new(Line::from(vec![
                     Span::raw(format!("{} ", checkbox)),
                     Span::styled(
-                        file.path.file_name().and_then(|n| n.to_str()).unwrap_or("?"),
-                        style
+                        file.path
+                            .file_name()
+                            .and_then(|n| n.to_str())
+                            .unwrap_or("?"),
+                        style,
                     ),
                     Span::raw(" "),
-                    Span::styled(
-                        format!("({})", lang_str),
-                        Style::default().fg(lang_color)
-                    ),
+                    Span::styled(format!("({})", lang_str), Style::default().fg(lang_color)),
                     if !size_str.is_empty() {
                         Span::raw(" ")
                     } else {
                         Span::raw("")
                     },
-                    Span::styled(
-                        size_str,
-                        Style::default().fg(Color::Gray)
-                    ),
+                    Span::styled(size_str, Style::default().fg(Color::Gray)),
                 ]))
             })
             .collect();
@@ -1691,7 +1909,11 @@ impl ApexTui {
         let list = List::new(items)
             .block(Block::default().borders(Borders::ALL).title("Files"))
             .style(Style::default().fg(Color::White))
-            .highlight_style(Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD));
+            .highlight_style(
+                Style::default()
+                    .fg(Color::Cyan)
+                    .add_modifier(Modifier::BOLD),
+            );
 
         f.render_widget(list, chunks[1]);
     }
@@ -1710,10 +1932,16 @@ impl ApexTui {
             Span::styled(current_tab_name, Style::default().fg(Color::Cyan)),
             Span::raw(" | "),
             Span::raw("Selected: "),
-            Span::styled(format!("{}", selected_count), Style::default().fg(Color::Cyan)),
+            Span::styled(
+                format!("{}", selected_count),
+                Style::default().fg(Color::Cyan),
+            ),
             Span::raw(" | "),
             Span::raw("Scanned: "),
-            Span::styled(format!("{}", scanned_count), Style::default().fg(Color::Cyan)),
+            Span::styled(
+                format!("{}", scanned_count),
+                Style::default().fg(Color::Cyan),
+            ),
             Span::raw(" | "),
             Span::raw("Press "),
             Span::styled("q", Style::default().add_modifier(Modifier::BOLD)),

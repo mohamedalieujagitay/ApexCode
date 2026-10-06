@@ -6,8 +6,8 @@
 //!
 //! Built with ❤️ by Mohamed Alieu Jagitay
 
-use regex::Regex;
 use rand::Rng;
+use regex::Regex;
 use std::collections::HashMap;
 
 /// The Undercover Engine - transforms AI-generated content to human-like patterns
@@ -111,7 +111,8 @@ impl UndercoverEngine {
         ];
 
         for (formal, informal) in replacements {
-            self.word_replacements.insert(formal.to_string(), informal.to_string());
+            self.word_replacements
+                .insert(formal.to_string(), informal.to_string());
         }
     }
 
@@ -145,6 +146,9 @@ impl UndercoverEngine {
 
         // Apply word replacements
         result = self.apply_word_replacements(&result);
+
+        // Banned words are filler adjectives, so dropping them keeps the subject readable
+        result = self.strip_banned_words(&result);
 
         // Remove terminal periods
         result = self.remove_terminal_periods(&result);
@@ -211,10 +215,10 @@ impl UndercoverEngine {
         result = result.replace('–', "-");
 
         // Replace fancy quotes with regular quotes
-        result = result.replace('«', "\"").replace('»', "\"");
-        result = result.replace('‹', "'").replace('›', "'");
-        result = result.replace('「', "\"").replace('」', "\"");
-        result = result.replace('『', "'").replace('』', "'");
+        result = result.replace(['«', '»'], "\"");
+        result = result.replace(['‹', '›'], "'");
+        result = result.replace(['「', '」'], "\"");
+        result = result.replace(['『', '』'], "'");
 
         // Replace fancy apostrophes with regular apostrophes
         result = result.replace('\u{2018}', "'");
@@ -254,7 +258,19 @@ impl UndercoverEngine {
 
     /// Strip conventional commit prefixes
     fn strip_conventional_prefixes(&self, message: &str) -> String {
-        let prefixes = ["feat:", "fix:", "docs:", "style:", "refactor:", "test:", "chore:", "perf:", "ci:", "build:", "revert:"];
+        let prefixes = [
+            "feat:",
+            "fix:",
+            "docs:",
+            "style:",
+            "refactor:",
+            "test:",
+            "chore:",
+            "perf:",
+            "ci:",
+            "build:",
+            "revert:",
+        ];
 
         let mut result = message.to_string();
         for prefix in &prefixes {
@@ -356,15 +372,25 @@ impl UndercoverEngine {
 
         // Convert /** ... */ to // ...
         let docblock_re = Regex::new(r"/\*\*\s*([^\*]+)\s*\*/").unwrap();
-        result = docblock_re.replace_all(&result, |caps: &regex::Captures| {
-            format!("// {}", caps.get(1).map(|m| m.as_str()).unwrap_or("").trim())
-        }).to_string();
+        result = docblock_re
+            .replace_all(&result, |caps: &regex::Captures| {
+                format!(
+                    "// {}",
+                    caps.get(1).map(|m| m.as_str()).unwrap_or("").trim()
+                )
+            })
+            .to_string();
 
         // Convert """ ... """ to // ...
         let triple_quote_re = Regex::new(r#"""\s*([^"]+)\s*""""#).unwrap();
-        result = triple_quote_re.replace_all(&result, |caps: &regex::Captures| {
-            format!("// {}", caps.get(1).map(|m| m.as_str()).unwrap_or("").trim())
-        }).to_string();
+        result = triple_quote_re
+            .replace_all(&result, |caps: &regex::Captures| {
+                format!(
+                    "// {}",
+                    caps.get(1).map(|m| m.as_str()).unwrap_or("").trim()
+                )
+            })
+            .to_string();
 
         result
     }
@@ -428,6 +454,20 @@ impl UndercoverEngine {
         result.join("\n")
     }
 
+    /// Remove banned words and collapse the gaps they leave
+    fn strip_banned_words(&self, text: &str) -> String {
+        let mut result = text.to_string();
+
+        for banned in &self.banned_words {
+            let pattern = format!(r"(?i)\b{}\b", regex::escape(banned));
+            if let Ok(re) = Regex::new(&pattern) {
+                result = re.replace_all(&result, "").to_string();
+            }
+        }
+
+        result.split_whitespace().collect::<Vec<_>>().join(" ")
+    }
+
     /// Check if text contains banned words
     pub fn contains_banned_words(&self, text: &str) -> bool {
         let lower = text.to_lowercase();
@@ -477,7 +517,8 @@ mod tests {
     #[test]
     fn test_commit_message_transformation() {
         let engine = UndercoverEngine::new();
-        let result = engine.transform_commit_message("feat: Implement comprehensive user authentication");
+        let result =
+            engine.transform_commit_message("feat: Implement comprehensive user authentication");
         assert!(!result.contains("feat:"));
         assert!(!result.contains("comprehensive"));
     }

@@ -4,12 +4,13 @@
 //! repository-specific style and inject human entropy.
 
 use apexcode_core::{
-    CodeBlock, Humanizer, StyleProfile, NamingConvention, CommentStyle, IndentationStyle, CommitFormat
+    CodeBlock, CommentStyle, CommitFormat, Humanizer, IndentationStyle, NamingConvention,
+    StyleProfile,
 };
-use std::path::PathBuf;
-use std::collections::HashMap;
-use regex::Regex;
 use git2::Repository;
+use regex::Regex;
+use std::collections::HashMap;
+use std::path::{Path, PathBuf};
 
 /// Main humanizer implementation
 pub struct ApexHumanizer {
@@ -38,6 +39,12 @@ impl Default for HumanizerConfig {
             inject_comments: false,
             rename_variables: false,
         }
+    }
+}
+
+impl Default for ApexHumanizer {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
@@ -116,7 +123,7 @@ impl ApexHumanizer {
             CommentStyle::None => return code.to_string(),
         };
 
-        let human_comments = vec![
+        let human_comments = [
             "Note: this could be optimized further",
             "TODO: consider refactoring",
             "FIXME: edge case handling needed",
@@ -183,16 +190,16 @@ impl ApexHumanizer {
             NamingConvention::CamelCase => {
                 // Convert snake_case to camelCase
                 let re = Regex::new(r"_([a-z])").unwrap();
-                result = re.replace_all(&result, |caps: &regex::Captures| {
-                    caps[1].to_uppercase()
-                }).to_string();
+                result = re
+                    .replace_all(&result, |caps: &regex::Captures| caps[1].to_uppercase())
+                    .to_string();
             }
             NamingConvention::PascalCase => {
                 // Convert snake_case to PascalCase
                 let re = Regex::new(r"(^|_)([a-z])").unwrap();
-                result = re.replace_all(&result, |caps: &regex::Captures| {
-                    caps[2].to_uppercase()
-                }).to_string();
+                result = re
+                    .replace_all(&result, |caps: &regex::Captures| caps[2].to_uppercase())
+                    .to_string();
             }
             NamingConvention::KebabCase => {
                 // Convert snake_case to kebab-case
@@ -207,7 +214,7 @@ impl ApexHumanizer {
     }
 
     /// Analyze repository to extract style profile
-    fn analyze_repository(&self, repo_path: &PathBuf) -> anyhow::Result<StyleProfile> {
+    fn analyze_repository(&self, repo_path: &Path) -> anyhow::Result<StyleProfile> {
         let repo = Repository::open(repo_path)?;
 
         // Analyze commit messages
@@ -249,10 +256,15 @@ impl ApexHumanizer {
     }
 
     /// Detect naming convention from repository
-    fn detect_naming_convention(&self, repo_path: &PathBuf) -> anyhow::Result<NamingConvention> {
+    fn detect_naming_convention(&self, repo_path: &Path) -> anyhow::Result<NamingConvention> {
         let mut snake_count = 0;
         let mut camel_count = 0;
         let mut pascal_count = 0;
+
+        // Built once here; compiling these per file was the slow part on big repos
+        let snake_re = Regex::new(r"\b[a-z][a-z0-9_]*[a-z0-9]\b").unwrap();
+        let camel_re = Regex::new(r"\b[a-z][a-zA-Z0-9]*[A-Z][a-zA-Z0-9]*\b").unwrap();
+        let pascal_re = Regex::new(r"\b[A-Z][a-zA-Z0-9]*[A-Z][a-zA-Z0-9]*\b").unwrap();
 
         // Scan common source files
         for entry in walkdir::WalkDir::new(repo_path)
@@ -260,17 +272,15 @@ impl ApexHumanizer {
             .filter_map(|e| e.ok())
             .filter(|e| {
                 let path = e.path();
-                path.extension().map_or(false, |ext| {
-                    matches!(ext.to_str(), Some("rs" | "py" | "js" | "ts" | "go" | "cpp" | "c"))
+                path.extension().is_some_and(|ext| {
+                    matches!(
+                        ext.to_str(),
+                        Some("rs" | "py" | "js" | "ts" | "go" | "cpp" | "c")
+                    )
                 })
             })
         {
             if let Ok(content) = std::fs::read_to_string(entry.path()) {
-                // Count patterns
-                let snake_re = Regex::new(r"\b[a-z][a-z0-9_]*[a-z0-9]\b").unwrap();
-                let camel_re = Regex::new(r"\b[a-z][a-zA-Z0-9]*[A-Z][a-zA-Z0-9]*\b").unwrap();
-                let pascal_re = Regex::new(r"\b[A-Z][a-zA-Z0-9]*[A-Z][a-zA-Z0-9]*\b").unwrap();
-
                 snake_count += snake_re.find_iter(&content).count();
                 camel_count += camel_re.find_iter(&content).count();
                 pascal_count += pascal_re.find_iter(&content).count();
@@ -290,7 +300,7 @@ impl ApexHumanizer {
     }
 
     /// Detect comment style from repository
-    fn detect_comment_style(&self, repo_path: &PathBuf) -> anyhow::Result<CommentStyle> {
+    fn detect_comment_style(&self, repo_path: &Path) -> anyhow::Result<CommentStyle> {
         let mut inline_count = 0;
         let mut block_count = 0;
         let mut total_files = 0;
@@ -299,8 +309,11 @@ impl ApexHumanizer {
             .into_iter()
             .filter_map(|e| e.ok())
             .filter(|e| {
-                e.path().extension().map_or(false, |ext| {
-                    matches!(ext.to_str(), Some("rs" | "py" | "js" | "ts" | "go" | "cpp" | "c"))
+                e.path().extension().is_some_and(|ext| {
+                    matches!(
+                        ext.to_str(),
+                        Some("rs" | "py" | "js" | "ts" | "go" | "cpp" | "c")
+                    )
                 })
             })
         {
@@ -330,7 +343,7 @@ impl ApexHumanizer {
     }
 
     /// Detect indentation style from repository
-    fn detect_indentation(&self, repo_path: &PathBuf) -> anyhow::Result<IndentationStyle> {
+    fn detect_indentation(&self, repo_path: &Path) -> anyhow::Result<IndentationStyle> {
         let mut space_count = 0;
         let mut tab_count = 0;
         let mut space_sizes = Vec::new();
@@ -339,8 +352,11 @@ impl ApexHumanizer {
             .into_iter()
             .filter_map(|e| e.ok())
             .filter(|e| {
-                e.path().extension().map_or(false, |ext| {
-                    matches!(ext.to_str(), Some("rs" | "py" | "js" | "ts" | "go" | "cpp" | "c"))
+                e.path().extension().is_some_and(|ext| {
+                    matches!(
+                        ext.to_str(),
+                        Some("rs" | "py" | "js" | "ts" | "go" | "cpp" | "c")
+                    )
                 })
             })
         {
@@ -368,7 +384,8 @@ impl ApexHumanizer {
                 *size_counts.entry(size).or_insert(0) += 1;
             }
 
-            let most_common = size_counts.iter()
+            let most_common = size_counts
+                .iter()
                 .max_by_key(|&(_, count)| count)
                 .map(|(&size, _)| size as u8)
                 .unwrap_or(4);
@@ -393,7 +410,10 @@ impl ApexHumanizer {
         let mut subject_lengths = Vec::new();
         let mut body_count = 0;
 
-        let conventional_re = Regex::new(r"^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\(.+\))?:").unwrap();
+        let conventional_re = Regex::new(
+            r"^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\(.+\))?:",
+        )
+        .unwrap();
 
         for msg in messages {
             let lines: Vec<&str> = msg.lines().collect();
@@ -430,15 +450,18 @@ impl ApexHumanizer {
     }
 
     /// Detect maximum line length from repository
-    fn detect_max_line_length(&self, repo_path: &PathBuf) -> anyhow::Result<Option<usize>> {
+    fn detect_max_line_length(&self, repo_path: &Path) -> anyhow::Result<Option<usize>> {
         let mut line_lengths = Vec::new();
 
         for entry in walkdir::WalkDir::new(repo_path)
             .into_iter()
             .filter_map(|e| e.ok())
             .filter(|e| {
-                e.path().extension().map_or(false, |ext| {
-                    matches!(ext.to_str(), Some("rs" | "py" | "js" | "ts" | "go" | "cpp" | "c"))
+                e.path().extension().is_some_and(|ext| {
+                    matches!(
+                        ext.to_str(),
+                        Some("rs" | "py" | "js" | "ts" | "go" | "cpp" | "c")
+                    )
                 })
             })
         {
@@ -476,7 +499,7 @@ impl Humanizer for ApexHumanizer {
         Ok(result)
     }
 
-    fn learn_style(&self, repo_path: &PathBuf) -> anyhow::Result<StyleProfile> {
+    fn learn_style(&self, repo_path: &Path) -> anyhow::Result<StyleProfile> {
         // Check cache first
         if let Some(cached) = self.style_cache.get(repo_path) {
             return Ok(cached.clone());

@@ -37,6 +37,12 @@ impl Default for JitterConfig {
     }
 }
 
+impl Default for ApexJitter {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ApexJitter {
     /// Create a new jitter engine with default configuration
     pub fn new() -> Self {

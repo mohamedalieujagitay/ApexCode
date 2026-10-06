@@ -106,7 +106,8 @@ impl ApexDetector {
         }
 
         // Check for uniform comments
-        let comment_lines: Vec<_> = code.content
+        let comment_lines: Vec<_> = code
+            .content
             .lines()
             .filter(|l| l.trim().starts_with("//") || l.trim().starts_with("#"))
             .collect();

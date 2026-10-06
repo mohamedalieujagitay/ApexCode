@@ -6,7 +6,7 @@
 //! Built with ❤️ by Mohamed Alieu Jagitay
 
 use serde::{Deserialize, Serialize};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 /// Represents a block of code with metadata
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -142,7 +142,7 @@ impl StealthScore {
     pub fn new(ai_probability: f32, pattern_score: f32, style_score: f32) -> Self {
         let overall = 1.0 - (ai_probability * 0.5 + pattern_score * 0.3 + style_score * 0.2);
         Self {
-            overall: overall.max(0.0).min(1.0),
+            overall: overall.clamp(0.0, 1.0),
             ai_probability,
             pattern_score,
             style_score,
@@ -222,7 +222,7 @@ pub trait Humanizer: Send + Sync {
     fn humanize(&self, code: &CodeBlock, profile: &StyleProfile) -> anyhow::Result<String>;
 
     /// Learn style from a repository
-    fn learn_style(&self, repo_path: &PathBuf) -> anyhow::Result<StyleProfile>;
+    fn learn_style(&self, repo_path: &Path) -> anyhow::Result<StyleProfile>;
 }
 
 /// Trait for jitter engines (temporal obfuscation)
